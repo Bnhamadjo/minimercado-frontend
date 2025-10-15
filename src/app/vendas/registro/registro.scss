@@ -1,0 +1,85 @@
+@use "sass:color";
+
+// 🎨 Variáveis
+$primary-color: #27ae60;
+$danger-color: #e74c3c;
+$light-bg: #ffffff;
+$header-bg: #ecf0f1;
+$text-color: #2c3e50;
+$border-radius: 6px;
+$shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+// 🧾 Título da página
+.registro-titulo {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: $text-color;
+  border-bottom: 2px solid $primary-color;
+  padding-bottom: 5px;
+}
+
+// 📷 Scanner
+.scanner {
+  display: block;
+  margin-bottom: 20px;
+  border: 2px dashed $primary-color;
+  border-radius: $border-radius;
+  padding: 10px;
+}
+
+// ⚠️ Mensagem de erro
+.erro-msg {
+  color: $danger-color;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+// 📋 Tabela de itens
+.registro-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background-color: $header-bg;
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+
+  tbody tr:hover {
+    background-color: color.adjust($primary-color, $lightness: 45%);
+  }
+}
+
+// 💰 Total da venda
+.registro-total {
+  font-size: 18px;
+  color: $text-color;
+  margin-bottom: 15px;
+}
+
+// ✅ Botão de finalizar
+.btn-finalizar {
+  padding: 10px 20px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust($primary-color, $lightness: 45%);
+  }
+}

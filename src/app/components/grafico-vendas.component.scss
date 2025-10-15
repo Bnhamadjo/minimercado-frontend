@@ -1,0 +1,13 @@
+.grafico-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+canvas {
+  width: 100% !important;
+  height: auto !important;
+}

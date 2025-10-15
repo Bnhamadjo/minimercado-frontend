@@ -1,0 +1,74 @@
+<h2 class="estoque-titulo">📦 Movimentações de Estoque</h2>
+
+<form (ngSubmit)="buscarMovimentacoes()" class="filtro-form">
+  <div class="form-group">
+    <label>Data Início:</label>
+    <input type="date" [(ngModel)]="filtros.data_inicio" name="data_inicio" />
+  </div>
+
+  <div class="form-group">
+    <label>Data Fim:</label>
+    <input type="date" [(ngModel)]="filtros.data_fim" name="data_fim" />
+  </div>
+
+  <div class="form-group">
+    <label>Tipo:</label>
+    <select [(ngModel)]="filtros.tipo" name="tipo">
+      <option value="">Todos</option>
+      <option value="entrada">Entrada</option>
+      <option value="saida">Saída</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
+</form>
+
+<form (ngSubmit)="registrarMovimentacao()" class="registro-form">
+  <div class="form-group">
+    <label>Produto:</label>
+    <select [(ngModel)]="novaMovimentacao.produto_id" name="produto_id" required>
+      <option *ngFor="let p of produtos" [value]="p.id">{{ p.nome }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Tipo:</label>
+    <select [(ngModel)]="novaMovimentacao.tipo" name="tipo">
+      <option value="entrada">Entrada</option>
+      <option value="saida">Saída</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Quantidade:</label>
+    <input type="number" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="1" />
+  </div>
+
+  <div class="form-group">
+    <label>Motivo:</label>
+    <input type="text" [(ngModel)]="novaMovimentacao.motivo" name="motivo" />
+  </div>
+
+  <button type="submit" class="btn-registrar">✅ Registrar</button>
+</form>
+
+<table class="tabela-movimentacoes" *ngIf="movimentacoes.length > 0">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Produto</th>
+      <th>Tipo</th>
+      <th>Quantidade</th>
+      <th>Motivo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let m of movimentacoes">
+      <td>{{ m.created_at | date:'short' }}</td>
+      <td>{{ m.produto?.nome }}</td>
+      <td>{{ m.tipo }}</td>
+      <td>{{ m.quantidade }}</td>
+      <td>{{ m.motivo }}</td>
+    </tr>
+  </tbody>
+</table>

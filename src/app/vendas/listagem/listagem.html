@@ -1,0 +1,25 @@
+<h2 class="titulo-vendas">📊 Histórico de Vendas</h2>
+
+<div *ngFor="let venda of vendas" class="venda-card">
+  <h3 class="venda-titulo">🧾 Venda #{{ venda.id }} - {{ venda.data_venda | date:'short' }}</h3>
+  <p class="venda-total"><strong>Total:</strong> {{ venda.total | currency:'XOF':'symbol':'1.0-0' }}</p>
+
+  <table class="tabela-itens">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Qtd</th>
+        <th>Preço Unitário</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of venda.itens">
+        <td>{{ item.produto?.nome }}</td>
+        <td>{{ item.quantidade }}</td>
+        <td>{{ item.preco_unitario }}</td>
+        <td>{{ item.subtotal }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

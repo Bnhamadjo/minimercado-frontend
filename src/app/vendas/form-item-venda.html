@@ -1,0 +1,14 @@
+<h3>➕ Adicionar Item à Venda</h3>
+
+<form (ngSubmit)="adicionarItem()" #itemForm="ngForm">
+  <label>Produto ID:</label>
+  <input type="number" [(ngModel)]="item.produto_id" name="produto_id" required />
+
+  <label>Quantidade:</label>
+  <input type="number" [(ngModel)]="item.quantidade" name="quantidade" required min="1" />
+
+  <label>Preço Unitário:</label>
+  <input type="number" [(ngModel)]="item.preco_unitario" name="preco_unitario" required min="0" />
+
+  <button type="submit" [disabled]="itemForm.invalid">Adicionar</button>
+</form>

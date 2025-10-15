@@ -1,0 +1,24 @@
+<h2>Alerta de Baixo Estoque</h2>
+
+<div *ngIf="produtos.length === 0">
+  <p>✅ Todos os produtos estão com estoque suficiente.</p>
+</div>
+
+<table *ngIf="produtos.length > 0" border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Produto</th>
+      <th>Código de Barras</th>
+      <th>Quantidade</th>
+      <th>Categoria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of produtos">
+      <td>{{ p.nome }}</td>
+      <td>{{ p.codigo_barras }}</td>
+      <td style="color: red;"><strong>{{ p.quantidade }}</strong></td>
+      <td>{{ p.categoria?.nome }}</td>
+    </tr>
+  </tbody>
+</table>

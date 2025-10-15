@@ -1,0 +1,61 @@
+<h2 class="titulo-form">📦 Cadastro de Produto</h2>
+
+<form (ngSubmit)="salvarProduto()" #produtoForm="ngForm" class="formulario-produto" autocomplete="off">
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Nome</mat-label>
+    <input matInput type="text" name="nome" [(ngModel)]="produto.nome" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Código de Barras</mat-label>
+    <input matInput type="text" name="codigo_barras" [(ngModel)]="produto.codigo_barras" required />
+  </mat-form-field>
+
+  <!-- Scanner com seleção de câmera -->
+  <div class="scanner-container">
+    <mat-form-field appearance="outline" class="campo">
+      <mat-label>Selecionar Câmera</mat-label>
+      <mat-select [(value)]="selectedDevice">
+        <mat-option *ngFor="let device of availableDevices" [value]="device">
+          {{ device.label || 'Câmera ' + device.deviceId }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <zxing-scanner
+      [formats]="formats"
+      [device]="selectedDevice"
+      [autostart]="true"
+      (scanSuccess)="onCodeResult($event)">
+    </zxing-scanner>
+  </div>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Preço (FCFA)</mat-label>
+    <input matInput type="number" name="preco" [(ngModel)]="produto.preco" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Quantidade</mat-label>
+    <input matInput type="number" name="quantidade" [(ngModel)]="produto.quantidade" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Categoria</mat-label>
+    <mat-select name="categoria_id" [(ngModel)]="produto.categoria_id" required>
+      <mat-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nome }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Fornecedor</mat-label>
+    <mat-select name="fornecedor_id" [(ngModel)]="produto.fornecedor_id">
+      <mat-option *ngFor="let f of fornecedores" [value]="f.id">{{ f.nome }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="botoes">
+    <button mat-raised-button color="primary" type="submit">💾 Salvar</button>
+    <button mat-button type="reset">🧹 Limpar</button>
+  </div>
+</form>

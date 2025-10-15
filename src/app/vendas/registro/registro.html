@@ -1,0 +1,36 @@
+<h2 class="registro-titulo">🛒 Registro de Venda</h2>
+
+<zxing-scanner
+  class="scanner"
+  [formats]="formats"
+  (scanSuccess)="onCodeResult($event)">
+</zxing-scanner>
+
+<p *ngIf="erro" class="erro-msg">{{ erro }}</p>
+
+<table class="registro-tabela" *ngIf="itens.length > 0">
+  <thead>
+    <tr>
+      <th>Produto</th>
+      <th>Qtd</th>
+      <th>Preço</th>
+      <th>Subtotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of itens">
+      <td>{{ item.nome }}</td>
+      <td>{{ item.quantidade }}</td>
+      <td>{{ item.preco_unitario }}</td>
+      <td>{{ item.subtotal }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="registro-total" *ngIf="total > 0">
+  Total: {{ total | currency:'XOF':'symbol':'1.0-0' }}
+</h3>
+<app-form-item-venda (itemAdicionado)="inserirItem($event)"></app-form-item-venda>
+<button class="btn-finalizar" (click)="registrarVenda()" *ngIf="itens.length > 0">
+  ✅ Finalizar Venda
+</button>

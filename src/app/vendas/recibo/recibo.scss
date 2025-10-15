@@ -1,0 +1,80 @@
+@use "sass:color";
+
+$primary-color: #3498db;
+$light-bg: #ffffff;
+$header-bg: #ecf0f1;
+$text-color: #2c3e50;
+$border-radius: 6px;
+$shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+.recibo {
+  background-color: $light-bg;
+  padding: 25px;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: $text-color;
+
+  .recibo-titulo {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: color.adjust($text-color, $lightness: -10%);
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: 5px;
+  }
+
+  p {
+    margin: 5px 0;
+    font-size: 15px;
+  }
+
+  .recibo-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: $header-bg;
+      font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f7f7f7;
+    }
+
+    tbody tr:hover {
+      background-color: color.adjust($primary-color, $lightness: 45%);
+    }
+  }
+
+  .recibo-total {
+    margin-top: 20px;
+    font-size: 18px;
+    color: $text-color;
+  }
+
+  .btn-imprimir {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: color.adjust($primary-color, $lightness: 45%);
+    }
+  }
+}

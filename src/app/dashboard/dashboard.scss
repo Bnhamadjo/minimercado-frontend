@@ -1,0 +1,91 @@
+$card-bg: #ffffff;
+$card-radius: 12px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+$primary-color: #2c3e50;
+$accent-color: #3498db;
+$value-color: #1a1a1a;
+
+.dashboard {
+  padding: 2rem;
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: $primary-color;
+  }
+
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .card {
+    border-radius: $card-radius;
+    box-shadow: $card-shadow;
+    padding: 1.5rem;
+    width: 220px;
+    text-align: center;
+    flex: 1 1 calc(25% - 1.5rem);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: $card-hover-shadow;
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: $value-color;
+    }
+
+    &.card-produtos {
+      background-color: #bb1806;
+      .card-title {
+        color: #f3f7f5;
+      }
+    }
+
+    &.card-vendas {
+      background-color: #edea0b;
+      .card-title {
+        color: #01070c;
+      }
+    }
+
+    &.card-total {
+      background-color: #068d18;
+      .card-title {
+        color: #f7f4f1;
+      }
+    }
+  }
+}
+
+.divisor {
+  border: none;
+  border-top: 2px solid #e0e0e0;
+  margin: 2rem 0;
+}
+
+.grafico-container {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

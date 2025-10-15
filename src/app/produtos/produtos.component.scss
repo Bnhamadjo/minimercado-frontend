@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f9f9f9;
+}
+
+.titulo {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.tabela-produtos {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+  }
+
+  th {
+    background-color: #ecf0f1;
+  }
+}

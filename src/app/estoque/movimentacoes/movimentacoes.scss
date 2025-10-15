@@ -1,0 +1,84 @@
+@use "sass:color";
+
+$primary-color: #2980b9;
+$success-color: #27ae60;
+$header-bg: #ecf0f1;
+$text-color: #2c3e50;
+$border-radius: 6px;
+$shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+.estoque-titulo {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: $text-color;
+  border-bottom: 2px solid $primary-color;
+  padding-bottom: 5px;
+}
+
+.filtro-form,
+.registro-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+  align-items: flex-end;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: $border-radius;
+    }
+  }
+
+  .btn-filtrar,
+  .btn-registrar {
+    padding: 10px 20px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: color.adjust($primary-color, $lightness: 45%);
+    }
+  }
+}
+
+.tabela-movimentacoes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background-color: $header-bg;
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+
+  tbody tr:hover {
+    background-color: color.adjust($primary-color, $lightness: 45%);
+  }
+}
