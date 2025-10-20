@@ -1,0 +1,83 @@
+@use 'sass:color';
+
+$form-padding: 2rem;
+$input-padding: 0.75rem 1rem;
+$primary-color: #4a90e2;
+$accent-color: #f5f7fa;
+$error-color: #e74c3c;
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+div {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: $form-padding;
+  background-color: $accent-color;
+  border-radius: $border-radius;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  transition: all $transition-speed ease-in-out;
+
+  h2 {
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: $input-padding;
+    margin-bottom: 1rem;
+    border: 1px solid color.adjust($primary-color, $lightness: 30%);
+    border-radius: $border-radius;
+    font-size: 1rem;
+    transition: border-color $transition-speed;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: $input-padding;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color $transition-speed;
+
+    &:hover {
+      background-color: color.adjust($primary-color, $lightness: 45%);
+    }
+  }
+
+  p {
+    margin-top: 1rem;
+    color: $error-color;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  a {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    color: $primary-color;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color $transition-speed;
+
+    &:hover {
+     color: rgba($primary-color, 0.85); // reduz brilho sem alterar tom
+      text-decoration: underline;
+    }
+  }
+}

@@ -38,9 +38,54 @@ export const routes: Routes = [
       { path: 'fornecedores', component: FornecedorComponent },
       { path: 'vendas/itens', component: ListagemItensComponent },
 
-
+      // 🌟 Rota de Configurações com lazy loading de componentes standalone
+      {
+        path: 'configuracoes',
+        loadComponent: () => import('./configuracoes/configuracoes').then(m => m.ConfiguracoesComponent),
+        children: [
+          {
+            path: 'perfil',
+            loadComponent: () => import('./configuracoes/perfil/perfil').then(m => m.PerfilComponent)
+          },
+          {
+            path: 'loja',
+            loadComponent: () => import('./configuracoes/loja/loja').then(m => m.LojaComponent)
+          },
+          {
+            path: 'pagamento',
+            loadComponent: () => import('./configuracoes/pagamento/pagamento').then(m => m.PagamentoComponent)
+          },
+          {
+            path: 'estoque',
+            loadComponent: () => import('./configuracoes/estoque/estoque').then(m => m.EstoqueComponent)
+          },
+          {
+            path: 'relatorios',
+            loadComponent: () => import('./configuracoes/relatorios/relatorios').then(m => m.RelatoriosComponent)
+          },
+          {
+            path: 'permissoes',
+            loadComponent: () => import('./configuracoes/permissoes/permissoes').then(m => m.PermissoesComponent)
+          },
+          {
+            path: 'notificacoes',
+            loadComponent: () => import('./configuracoes/notificacoes/notificacoes').then(m => m.NotificacoesComponent)
+          },
+          {
+            path: '',
+            redirectTo: 'perfil',
+            pathMatch: 'full'
+          }
+        ]
+      }
     ]
   },
+
+  {
+  path: 'recuperar-senha',
+  loadComponent: () => import('./auth/login/login').then(m => m.LoginComponent)
+},
+
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

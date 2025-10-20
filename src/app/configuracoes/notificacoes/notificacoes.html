@@ -1,0 +1,22 @@
+<h2>Configurações de Notificações</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <fieldset>
+    <legend>Alertas</legend>
+    <label><input type="checkbox" formControlName="alerta_vencimento" /> Vencimento de produtos</label>
+    <label><input type="checkbox" formControlName="alerta_estoque_baixo" /> Estoque baixo</label>
+    <label><input type="checkbox" formControlName="alerta_venda_alta" /> Vendas acima da média</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Canais de envio</legend>
+    <label><input type="checkbox" formControlName="canal_email" /> E-mail</label>
+    <label><input type="checkbox" formControlName="canal_popup" /> Pop-up no sistema</label>
+    <label><input type="checkbox" formControlName="canal_sms" /> SMS</label>
+  </fieldset>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<div *ngIf="sucesso" style="color: green;">Notificações salvas com sucesso!</div>
+<div *ngIf="erro" style="color: red;">Erro ao salvar notificações.</div>

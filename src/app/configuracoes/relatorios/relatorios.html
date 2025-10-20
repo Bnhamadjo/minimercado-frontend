@@ -1,0 +1,33 @@
+<h2>Configurações de Relatórios</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <label>Frequência:</label>
+  <select formControlName="frequencia">
+    <option value="diario">Diário</option>
+    <option value="semanal">Semanal</option>
+    <option value="mensal">Mensal</option>
+  </select>
+
+  <label>Formato:</label>
+  <select formControlName="formato">
+    <option value="pdf">PDF</option>
+    <option value="excel">Excel</option>
+  </select>
+
+  <label>Filtro Padrão:</label>
+  <select formControlName="filtro_padrao">
+    <option value="data">Por Data</option>
+    <option value="produto">Por Produto</option>
+    <option value="colaborador">Por Colaborador</option>
+  </select>
+
+  <label><input type="checkbox" formControlName="envio_email" /> Enviar por e-mail</label>
+
+  <label>Email de destino:</label>
+  <input type="email" formControlName="email_destino" />
+
+  <button type="submit">Salvar</button>
+</form>
+
+<div *ngIf="sucesso" style="color: green;">Configurações salvas com sucesso!</div>
+<div *ngIf="erro" style="color: red;">Erro ao salvar configurações.</div>

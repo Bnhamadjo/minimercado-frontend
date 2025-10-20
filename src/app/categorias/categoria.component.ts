@@ -7,14 +7,15 @@ import { Categoria } from './categoria.model';
 
 @Component({
   selector: 'app-categoria',
-    standalone: true,
-    imports: [CommonModule, FormsModule, HttpClientModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, HttpClientModule],
   styleUrls: ['./categoria.component.scss'],
   templateUrl: './categoria.component.html'
 })
 export class CategoriaComponent implements OnInit {
   categorias: Categoria[] = [];
   categoria: Categoria = { nome: '' };
+  mensagem: string = '';
 
   constructor(private categoriaService: CategoriaService) {}
 
@@ -23,21 +24,25 @@ export class CategoriaComponent implements OnInit {
   }
 
   carregarCategorias(): void {
-    this.categoriaService.getCategorias().subscribe(data => this.categorias = data);
+    this.categoriaService.getCategorias().subscribe(data => {
+      this.categorias = data;
+    });
   }
 
   salvarCategoria(): void {
-    if (this.categoria.id) {
-      this.categoriaService.atualizarCategoria(this.categoria.id, this.categoria).subscribe(() => {
-        this.carregarCategorias();
-        this.categoria = { nome: '' };
-      });
-    } else {
-      this.categoriaService.criarCategoria(this.categoria).subscribe(() => {
-        this.carregarCategorias();
-        this.categoria = { nome: '' };
-      });
-    }
+    this.categoria.id ? this.atualizarCategoria() : this.criarCategoria();
+  }
+
+  private criarCategoria(): void {
+    this.categoriaService.criarCategoria(this.categoria).subscribe(() => {
+      this.reiniciarFormulario('Categoria criada com sucesso!');
+    });
+  }
+
+  private atualizarCategoria(): void {
+    this.categoriaService.atualizarCategoria(this.categoria.id!, this.categoria).subscribe(() => {
+      this.reiniciarFormulario('Categoria atualizada com sucesso!');
+    });
   }
 
   editar(cat: Categoria): void {
@@ -45,6 +50,17 @@ export class CategoriaComponent implements OnInit {
   }
 
   deletar(id: number): void {
-    this.categoriaService.deletarCategoria(id).subscribe(() => this.carregarCategorias());
+    this.categoriaService.deletarCategoria(id).subscribe(() => {
+      this.carregarCategorias();
+      this.mensagem = 'Categoria excluída com sucesso!';
+      setTimeout(() => this.mensagem = '', 3000);
+    });
+  }
+
+  private reiniciarFormulario(msg: string): void {
+    this.carregarCategorias();
+    this.categoria = { nome: '' };
+    this.mensagem = msg;
+    setTimeout(() => this.mensagem = '', 3000);
   }
 }

@@ -1,0 +1,24 @@
+<h2>Configurações de Estoque</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <label>Unidade Padrão:</label>
+  <select formControlName="unidade_padrao">
+    <option value="unidade">Unidade</option>
+    <option value="kg">Kg</option>
+    <option value="litro">Litro</option>
+    <option value="pacote">Pacote</option>
+  </select>
+
+  <label>Alerta de Estoque Mínimo:</label>
+  <input type="number" formControlName="alerta_minimo" />
+
+  <label><input type="checkbox" formControlName="validade_ativa" /> Ativar controle de validade</label>
+
+  <label>Dias antes do vencimento para alerta:</label>
+  <input type="number" formControlName="dias_validade_alerta" />
+
+  <button type="submit">Salvar</button>
+</form>
+
+<div *ngIf="sucesso" style="color: green;">Configurações salvas com sucesso!</div>
+<div *ngIf="erro" style="color: red;">Erro ao salvar configurações.</div>

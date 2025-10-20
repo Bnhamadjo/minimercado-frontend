@@ -1,8 +1,11 @@
 <h3>➕ Adicionar Item à Venda</h3>
 
 <form (ngSubmit)="adicionarItem()" #itemForm="ngForm">
-  <label>Produto ID:</label>
-  <input type="number" [(ngModel)]="item.produto_id" name="produto_id" required />
+ <label for="produto">Produto:</label>
+<select id="produto" [(ngModel)]="item.produto_id" name="produto_id" required>
+  <option value="" disabled selected>Selecione um produto</option>
+  <option *ngFor="let p of produtos" [value]="p.id">{{ p.nome }}</option>
+</select>
 
   <label>Quantidade:</label>
   <input type="number" [(ngModel)]="item.quantidade" name="quantidade" required min="1" />

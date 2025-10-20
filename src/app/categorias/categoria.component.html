@@ -4,11 +4,12 @@
   <input [(ngModel)]="categoria.nome" name="nome" placeholder="Nome da categoria" required />
   <button type="submit">Salvar</button>
 </form>
-
+<p *ngIf="mensagem" class="mensagem-sucesso">{{ mensagem }}</p>
 <ul>
   <li *ngFor="let cat of categorias">
     {{ cat.nome }}
     <button (click)="editar(cat)">Editar</button>
     <button (click)="deletar(cat.id!)">Excluir</button>
   </li>
+  
 </ul>

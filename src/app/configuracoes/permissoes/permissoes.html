@@ -1,0 +1,23 @@
+<h2>Configurações de Permissões</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <label>Perfil:</label>
+  <select formControlName="perfil">
+    <option value="administrador">Administrador</option>
+    <option value="operador">Operador</option>
+    <option value="estoquista">Estoquista</option>
+    <option value="caixa">Caixa</option>
+  </select>
+
+  <label>Permissões:</label>
+  <div formArrayName="permissoes">
+    <label *ngFor="let perm of permissoesDisponiveis; let i = index">
+      <input type="checkbox" [formControlName]="i" /> {{ perm }}
+    </label>
+  </div>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<div *ngIf="sucesso" style="color: green;">Permissões salvas com sucesso!</div>
+<div *ngIf="erro" style="color: red;">Erro ao salvar permissões.</div>

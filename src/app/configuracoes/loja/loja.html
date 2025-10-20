@@ -1,0 +1,23 @@
+<h2>Configurações da Loja</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()" enctype="multipart/form-data">
+  <label>Nome da Loja:</label>
+  <input type="text" formControlName="nome_loja" />
+
+  <label>CNPJ:</label>
+  <input type="text" formControlName="cnpj" />
+
+  <label>Endereço:</label>
+  <input type="text" formControlName="endereco" />
+
+  <label>Telefone:</label>
+  <input type="text" formControlName="telefone" />
+
+  <label>Logo:</label>
+  <input type="file" (change)="onLogoSelecionado($event)" />
+
+  <button type="submit">Salvar</button>
+</form>
+
+<div *ngIf="sucesso" style="color: green;">Dados da loja salvos com sucesso!</div>
+<div *ngIf="erro" style="color: red;">Erro ao salvar dados da loja.</div>

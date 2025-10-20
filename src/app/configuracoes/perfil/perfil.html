@@ -1,0 +1,44 @@
+<h2 class="titulo-form">⚙️ Configurações de Perfil</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()" class="formulario-perfil">
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Nome</mat-label>
+    <input matInput type="text" formControlName="nome" required />
+    <mat-error *ngIf="form.get('nome')?.hasError('required')">Nome é obrigatório</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="email" required />
+    <mat-error *ngIf="form.get('email')?.hasError('required')">Email é obrigatório</mat-error>
+    <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Nova Senha</mat-label>
+    <input matInput type="password" formControlName="senha" />
+    <mat-hint>Deixe em branco se não quiser alterar</mat-hint>
+    <mat-error *ngIf="form.get('senha')?.hasError('minlength')">
+      A senha deve ter pelo menos 6 caracteres
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Função (role)</mat-label>
+    <mat-select formControlName="role">
+      <mat-option value="admin">Admin</mat-option>
+      <mat-option value="user">Usuário</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="botoes">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      💾 Salvar
+    </button>
+  </div>
+
+</form>
+
+<div *ngIf="sucesso" class="mensagem-sucesso">Perfil atualizado com sucesso!</div>
+<div *ngIf="erro" class="mensagem-erro">Erro ao atualizar perfil.</div>

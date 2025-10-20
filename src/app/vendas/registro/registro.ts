@@ -49,16 +49,7 @@ export class RegistroComponent {
     };
   }
 
-  ngOnInit(): void {
-  this.itens.push({
-    produto_id: 1,
-    nome: 'Produto Teste',
-    quantidade: 1,
-    preco_unitario: 1000,
-    subtotal: 1000
-  });
-  this.calcularTotal();
-}
+  
 
   onCodeResult(codigo: string) {
     console.log('Código escaneado:', codigo);

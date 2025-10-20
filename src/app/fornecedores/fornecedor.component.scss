@@ -1,135 +1,95 @@
+
 @use "sass:color";
 
-/* fornecedor.scss */
-
-/* Variáveis de cores */
-$primary-color: #4CAF50;
-$secondary-color: #FFC107;
-$danger-color: #F44336;
+$form-bg: #f9f9f9;
+$primary-color: #007bff;
 $text-color: #333;
-$background-color: #F9F9F9;
-$border-radius: 8px;
-$padding: 12px;
+$border-color: color.adjust($text-color, $lightness: 60%);
+$hover-color: color.adjust($primary-color, $lightness: -10%);
+$button-text: #fff;
 
-/* Container principal */
-.fornecedor-container {
-  max-width: 900px;
-  margin: 0 auto;
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: $primary-color;
+}
+
+form {
+  background-color: $form-bg;
   padding: 20px;
-  background-color: $background-color;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: grid;
+  gap: 12px;
+  max-width: 500px;
 
-  h2 {
-    color: $primary-color;
-    margin-bottom: 20px;
-    text-align: center;
+  input {
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: 16px;
+    color: $text-color;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px color.adjust($primary-color, $lightness: 40%);
+    }
   }
 
-  /* Formulário */
-  form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 30px;
+  button[type="submit"] {
+    background-color: $primary-color;
+    color: $button-text;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
-    input, select {
-      flex: 1 1 200px;
-      padding: $padding;
-      border: 1px solid lighten($text-color, 60%);
-      border-radius: $border-radius;
-      font-size: 1rem;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 5px rgba($primary-color, 0.3);
-      }
+    &:hover {
+      background-color: $hover-color;
     }
+  }
+}
+
+ul {
+  margin-top: 30px;
+  list-style: none;
+  padding: 0;
+
+  li {
+    background-color: #fff;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
 
     button {
       background-color: $primary-color;
-      color: #fff;
+      color: $button-text;
       border: none;
-      padding: $padding 20px;
-      border-radius: $border-radius;
+      padding: 6px 12px;
+      border-radius: 4px;
       cursor: pointer;
       transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: darken($primary-color, 10%);
-      }
-    }
-  }
-
-  /* Lista de fornecedores */
-  .fornecedor-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-
-    .fornecedor-card {
-      background-color: #fff;
-      padding: 15px;
-      border-radius: $border-radius;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        background-color: $hover-color;
       }
 
-      h3 {
-        color: $text-color;
-        margin-bottom: 10px;
-      }
+      &:nth-child(2) {
+        background-color: #dc3545;
 
-      p {
-        color: lighten($text-color, 20%);
-        margin-bottom: 15px;
-      }
-
-      .actions {
-        display: flex;
-        gap: 10px;
-
-        button {
-          flex: 1;
-          padding: 8px;
-          border-radius: $border-radius;
-          font-weight: bold;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-
-          &.edit {
-            background-color: $secondary-color;
-            color: #fff;
-
-            &:hover {
-               background-color: color.adjust($primary-color, $lightness: 45%);
-            }
-          }
-
-          &.delete {
-            background-color: $danger-color;
-            color: #fff;
-
-            &:hover {
-               background-color: color.adjust($primary-color, $lightness: 45%);
-            }
-          }
+        &:hover {
+          background-color: color.adjust(#dc3545, $lightness: -10%);
         }
       }
     }
-  }
-}
-/* Responsivo */
-@media screen and (max-width: 600px) {
-  .fornecedor-container form {
-    flex-direction: column;
   }
 }

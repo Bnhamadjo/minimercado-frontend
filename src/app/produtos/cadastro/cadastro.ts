@@ -61,7 +61,7 @@ export class CadastroComponent implements OnInit {
 
   categorias: any[] = [];
   fornecedores: any[] = [];
-  formats: BarcodeFormat[] = [BarcodeFormat.EAN_13, BarcodeFormat.CODE_128];
+  formats: BarcodeFormat[] = [BarcodeFormat.QR_CODE];
   availableDevices: MediaDeviceInfo[] = [];
   selectedDevice: MediaDeviceInfo | undefined;
 
@@ -73,25 +73,37 @@ export class CadastroComponent implements OnInit {
     this.availableDevices = devices.filter(d => d.kind === 'videoinput');
     this.selectedDevice = this.availableDevices[0]; // Seleciona a primeira câmera disponível
   })
+
+  
     
   }
-
-  onCodeResult(result: string): void {
+onCodeResult(result: string): void {
+  console.log('QR detectado:', result); // Ajuda a depurar
   this.produto.codigo_barras = result;
 
   const headers = this.getHeaders();
-  this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${result}`, { headers })
-    .subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.produto = { ...res };
+
+  // Busca o produto apenas se o resultado do QR não estiver vazio
+  if (result && result.trim() !== '') {
+    this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${encodeURIComponent(result)}`, { headers })
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            // Atualiza apenas os campos recebidos da API
+            this.produto.nome = res.nome || '';
+            this.produto.preco = res.preco || 0;
+            this.produto.quantidade = res.quantidade || 0;
+            this.produto.categoria_id = res.categoria_id || 0;
+            this.produto.fornecedor_id = res.fornecedor_id;
+          }
+        },
+        error: (err) => {
+          console.error('Produto não encontrado', err);
         }
-      },
-      error: () => {
-        console.error('Produto não encontrado');
-      }
-    });
+      });
+  }
 }
+
 
   carregarCategorias(): void {
     const headers = this.getHeaders();

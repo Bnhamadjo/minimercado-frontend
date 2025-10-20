@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 
 
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AuthService } from './services/auth';
 
 
 
@@ -24,4 +25,11 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 })
 export class AppComponent {
   protected readonly title = signal('minimercado-frontend');
+
+  // app.component.ts
+constructor(private authService: AuthService) {}
+
+get isLoggedIn(): boolean {
+  return this.authService.isAuthenticated();
+}
 }

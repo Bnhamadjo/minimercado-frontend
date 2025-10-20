@@ -10,21 +10,41 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.apiUrl}/login`, { email, password });
-  }
+  login(email: string, password: string): Observable<{ token: string }> {
+  return this.http.post<{ token: string }>(
+    `${this.apiUrl}/login`,
+    { email, password },
+    { headers: { 'Content-Type': 'application/json' } }
+  );
+}
+
+
+resetPassword(email: string) {
+  return this.http.post<{ message: string }>(
+    `${this.apiUrl}/reset-password`,
+    { email, new_password: '123456' },
+    { headers: { 'Content-Type': 'application/json' } }
+  );
+}
+
 
   logout(): void {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    });
+  const token = localStorage.getItem('token');
+  if (!token) return;
 
-    this.http.post(`${this.apiUrl}/logout`, {}, { headers }).subscribe(() => {
+  this.http.post(`${this.apiUrl}/logout`, {}, {
+    headers: { Authorization: `Bearer ${token}` }
+  }).subscribe({
+    next: () => {
       localStorage.removeItem('token');
       window.location.href = '/login';
-    });
-  }
+    },
+    error: () => {
+      localStorage.removeItem('token'); // garante logout mesmo se erro
+      window.location.href = '/login';
+    }
+  });
+}
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');

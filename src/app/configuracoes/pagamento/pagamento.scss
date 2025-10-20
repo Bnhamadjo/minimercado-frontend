@@ -1,0 +1,82 @@
+
+
+form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #fdfbfb, #ebedee);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  label {
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+
+    input[type='checkbox'] {
+      accent-color: #1abc9c;
+      width: 18px;
+      height: 18px;
+    }
+
+    input[type='number'] {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: 1px solid #bdc3c7;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #1abc9c;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
+      }
+    }
+  }
+
+  button[type='submit'] {
+    background-color: #1abc9c;
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #16a085;
+    }
+  }
+}
+
+h2 {
+  text-align: center;
+  color: #34495e;
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+div[ngIf] {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+
+  &.sucesso {
+    color: #27ae60;
+  }
+
+  &.erro {
+    color: #e74c3c;
+  }
+}

@@ -67,3 +67,27 @@
   justify-content: space-between;
   margin-top: 20px;
 }
+.botao-scan {
+  padding: 10px 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #34495e;
+  }
+}
+.mensagem-erro {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+.mensagem-sucesso {
+  color: #27ae60;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}

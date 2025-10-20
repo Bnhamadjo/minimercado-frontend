@@ -1,0 +1,69 @@
+
+
+form {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #f5f7fa, #e4e7ed);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  /* Para mat-form-field */
+  mat-form-field {
+    width: 100%;
+
+    .mat-form-field-wrapper {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .mat-form-field-flex {
+      padding: 0.6rem 0.5rem;
+    }
+  }
+
+  /* Botão de submit */
+  button[type='submit'] {
+    background-color: #1abc9c;
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #16a085;
+    }
+  }
+}
+
+h2 {
+  text-align: center;
+  color: #34495e;
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* Mensagens de sucesso e erro */
+div[ngIf] {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+
+  &.sucesso {
+    color: #27ae60;
+  }
+
+  &.erro {
+    color: #e74c3c;
+  }
+}

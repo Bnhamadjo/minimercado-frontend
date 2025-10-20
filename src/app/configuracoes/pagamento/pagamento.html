@@ -1,0 +1,19 @@
+<h2>Formas de Pagamento</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <label><input type="checkbox" formControlName="dinheiro" /> Dinheiro</label>
+  <label><input type="checkbox" formControlName="cartao" /> Cartão</label>
+  <label><input type="checkbox" formControlName="pix" /> Pix</label>
+  <label><input type="checkbox" formControlName="vale" /> Vale</label>
+
+  <label>Taxa de Cartão (%):</label>
+  <input type="number" formControlName="taxa_cartao" />
+
+  <label>Desconto no Pix (%):</label>
+  <input type="number" formControlName="desconto_pix" />
+
+  <button type="submit">Salvar</button>
+</form>
+
+<div *ngIf="sucesso" style="color: green;">Configurações salvas com sucesso!</div>
+<div *ngIf="erro" style="color: red;">Erro ao salvar configurações.</div>
