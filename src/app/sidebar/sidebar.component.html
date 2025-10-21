@@ -1,20 +1,23 @@
 <aside class="sidebar">
   <div class="logo">Mini-Mercado</div>
-  <h2 class="sidebar-subtitle">Menu</h2>
   <h3>
-  <nav>
-    <ul>
-      <li routerLink="/dashboard" routerLinkActive="active">Dashboard</li>
-      <li routerLink="/produtos/cadastro" routerLinkActive="active">Cadastro-Produto</li>
-      <li routerLink="/produtos/listagem" routerLinkActive="active">Produtos</li>
-      <li routerLink="/vendas/registro" routerLinkActive="active">Vendas</li>
-      <li routerLink="/estoque/movimentacoes" routerLinkActive="active">Estoque</li> 
-      <li routerLink="/categorias" routerLinkActive="active">Categorias</li>
-      <li routerLink="/fornecedores" routerLinkActive="active">Fornecedores</li>
+    <nav>
+      <ul>
+        <li routerLink="/dashboard" routerLinkActive="active">Dashboard</li>
+        <li routerLink="/produtos/cadastro" routerLinkActive="active">Cadastro-Produto</li>
+        <li routerLink="/produtos/listagem" routerLinkActive="active">Produtos</li>
+        <li routerLink="/vendas/registro" routerLinkActive="active">Vendas</li>
+        <li routerLink="/estoque/movimentacoes" routerLinkActive="active">Estoque</li>
+        <li routerLink="/categorias" routerLinkActive="active">Categorias</li>
+        <li routerLink="/fornecedores" routerLinkActive="active">Fornecedores</li>
+        <li routerLink="/configuracoes" routerLinkActive="active">Configurações</li>
 
-      <li routerLink="/configuracoes" routerLinkActive="active">Configurações</li>
-      <button (click)="onLogout()" class="btn btn-danger">Sair</button>
-    </ul>
-  </nav>
+        <hr />
+
+        <li>
+          <button (click)="onLogout()" class="btn btn-danger">Sair</button>
+        </li>
+      </ul>
+    </nav>
   </h3>
 </aside>

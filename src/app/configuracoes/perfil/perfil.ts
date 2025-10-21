@@ -29,6 +29,7 @@ export class PerfilComponent implements OnInit {
   form: FormGroup;
   sucesso = false;
   erro = false;
+  carregando = false;
 
   roles: string[] = ['admin', 'user'];
 
@@ -36,13 +37,12 @@ export class PerfilComponent implements OnInit {
     this.form = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      senha: [''],
-      role: [''] // Inclui o campo role para enviar ao backend
+      senha: ['', Validators.minLength(6)], // ← aqui está o ajuste
+      role: ['', Validators.required] // Adiciona validação obrigatória
     });
   }
 
   ngOnInit(): void {
-    // Carrega os dados do usuário logado
     this.configuracoesService.getPerfil().subscribe({
       next: (user: any) => {
         this.form.patchValue({
@@ -60,15 +60,26 @@ export class PerfilComponent implements OnInit {
 
   salvar(): void {
     if (this.form.valid) {
-      this.configuracoesService.updatePerfil(this.form.value).subscribe({
+      this.carregando = true;
+      this.sucesso = false;
+      this.erro = false;
+
+      const payload = {
+        nome: this.form.value.nome,
+        email: this.form.value.email,
+        senha: this.form.value.senha || undefined, // evita enviar string vazia
+        role: this.form.value.role
+      };
+
+      this.configuracoesService.updatePerfil(payload).subscribe({
         next: () => {
           this.sucesso = true;
-          this.erro = false;
+          this.carregando = false;
         },
         error: (err) => {
           console.error('Erro ao atualizar perfil', err);
-          this.sucesso = false;
           this.erro = true;
+          this.carregando = false;
         }
       });
     } else {

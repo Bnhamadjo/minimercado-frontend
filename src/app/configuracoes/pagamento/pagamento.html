@@ -3,7 +3,11 @@
 <form [formGroup]="form" (ngSubmit)="salvar()">
   <label><input type="checkbox" formControlName="dinheiro" /> Dinheiro</label>
   <label><input type="checkbox" formControlName="cartao" /> Cartão</label>
-  <label><input type="checkbox" formControlName="pix" /> Pix</label>
+  <label><input type="checkbox" formControlName="pix" /> OM/MOMO</label>
+  <label>
+  <input type="checkbox" formControlName="parcelamento" />
+  Permitir parcelamento
+</label>
   <label><input type="checkbox" formControlName="vale" /> Vale</label>
 
   <label>Taxa de Cartão (%):</label>

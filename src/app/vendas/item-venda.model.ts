@@ -1,6 +1,7 @@
 import { Produto } from "../produtos/produto.model";
 
 export interface ItemVenda {
+  parcelas: string;
   id?: number;
   venda_id?: number;
   produto_id: number;
@@ -8,4 +9,5 @@ export interface ItemVenda {
   preco_unitario: number;
   subtotal?: number;
   produto?: Produto;
+  
 }

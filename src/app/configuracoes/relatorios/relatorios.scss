@@ -1,16 +1,4 @@
-@use '@angular/material/typography' as mat-typography;
-@use '@angular/material/color' as mat-color;
-@use '@angular/material/density' as mat-density;
-@use '@angular/material/elevation' as mat-elevation;
-@use '@angular/material/shape' as mat-shape;
-@use '@angular/material/theme' as mat-theme;
-@use '@angular/material/core' as mat-core;
-@use '@angular/material/typography/typography' as mat-typography-definitions;
-@use '@angular/material/color/palette' as mat-palette;
-@use '@angular/material/typography/roboto' as Roboto;
-@use '@angular/material/density/density' as mat-density-definitions;
-@use '@angular/material/elevation/elevation' as mat-elevation-definitions;
-@use '@angular/material/shape/shape' as mat-shape-definitions;
+
 @use "sass:color";
 
 form {

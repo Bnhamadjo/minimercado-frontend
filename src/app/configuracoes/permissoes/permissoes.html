@@ -16,7 +16,7 @@
     </label>
   </div>
 
-  <button type="submit">Salvar</button>
+  <button type="submit" [disabled]="form.invalid || carregando">Salvar</button>
 </form>
 
 <div *ngIf="sucesso" style="color: green;">Permissões salvas com sucesso!</div>

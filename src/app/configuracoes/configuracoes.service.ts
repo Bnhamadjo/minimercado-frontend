@@ -9,14 +9,28 @@ interface PermissaoResponse {
 
 @Injectable({ providedIn: 'root' })
 export class ConfiguracoesService {
+  erro!: boolean;
+  carregando: boolean | undefined;
+ getConfiguracoes(): Observable<any> {
+  return this.http.get(`${this.apiUrl}`, { headers: this.getHeaders() });
+}
   private apiUrl = 'http://localhost:8000/api/configuracoes';
 
   constructor(private http: HttpClient) {}
 
   // Atualiza o perfil do usuário
   updatePerfil(data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/perfil`, data, { headers: this.getHeaders() });
-  }
+  const payload = { ...data };
+  if (!payload.senha) delete payload.senha;
+  return this.http.put(`${this.apiUrl}/perfil`, payload, { headers: this.getHeaders() });
+
+  error: (err: { error: any; }) => {
+  console.error('Erro ao atualizar perfil', err);
+  console.error('Detalhes do servidor:', err.error); // ← isso mostra a mensagem de validação
+  this.erro = true;
+  this.carregando = false;
+}
+}
 
   // Obtém o perfil do usuário logado
   getPerfil(): Observable<any> {

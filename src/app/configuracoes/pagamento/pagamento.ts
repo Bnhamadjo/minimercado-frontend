@@ -24,7 +24,8 @@ export class PagamentoComponent {
       pix: [true],
       vale: [false],
       taxa_cartao: [''],
-      desconto_pix: ['']
+      desconto_pix: [''],
+      parcelamento: [false],
     });
   }
 

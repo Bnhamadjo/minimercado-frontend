@@ -17,10 +17,22 @@ import { CategoriaComponent } from './categorias/categoria.component';
 import { ListagemItensComponent } from './vendas/listagem-itens';
 
 export const routes: Routes = [
+  // Redirecionamento raiz para login
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  // Rota de login
   {
     path: 'login',
     loadComponent: () => import('./auth/login/login').then(m => m.LoginComponent)
   },
+
+  // Rota de recuperação de senha
+  {
+    path: 'recuperar-senha',
+    loadComponent: () => import('./auth/login/login').then(m => m.LoginComponent)
+  },
+
+  // Rota protegida com layout
   {
     path: '',
     component: LayoutComponent,
@@ -37,56 +49,24 @@ export const routes: Routes = [
       { path: 'categorias', component: CategoriaComponent },
       { path: 'fornecedores', component: FornecedorComponent },
       { path: 'vendas/itens', component: ListagemItensComponent },
-
-      // 🌟 Rota de Configurações com lazy loading de componentes standalone
       {
         path: 'configuracoes',
         loadComponent: () => import('./configuracoes/configuracoes').then(m => m.ConfiguracoesComponent),
         children: [
-          {
-            path: 'perfil',
-            loadComponent: () => import('./configuracoes/perfil/perfil').then(m => m.PerfilComponent)
-          },
-          {
-            path: 'loja',
-            loadComponent: () => import('./configuracoes/loja/loja').then(m => m.LojaComponent)
-          },
-          {
-            path: 'pagamento',
-            loadComponent: () => import('./configuracoes/pagamento/pagamento').then(m => m.PagamentoComponent)
-          },
-          {
-            path: 'estoque',
-            loadComponent: () => import('./configuracoes/estoque/estoque').then(m => m.EstoqueComponent)
-          },
-          {
-            path: 'relatorios',
-            loadComponent: () => import('./configuracoes/relatorios/relatorios').then(m => m.RelatoriosComponent)
-          },
-          {
-            path: 'permissoes',
-            loadComponent: () => import('./configuracoes/permissoes/permissoes').then(m => m.PermissoesComponent)
-          },
-          {
-            path: 'notificacoes',
-            loadComponent: () => import('./configuracoes/notificacoes/notificacoes').then(m => m.NotificacoesComponent)
-          },
-          {
-            path: '',
-            redirectTo: 'perfil',
-            pathMatch: 'full'
-          }
+          { path: 'perfil', loadComponent: () => import('./configuracoes/perfil/perfil').then(m => m.PerfilComponent) },
+          { path: 'loja', loadComponent: () => import('./configuracoes/loja/loja').then(m => m.LojaComponent) },
+          { path: 'pagamento', loadComponent: () => import('./configuracoes/pagamento/pagamento').then(m => m.PagamentoComponent) },
+          { path: 'estoque', loadComponent: () => import('./configuracoes/estoque/estoque').then(m => m.EstoqueComponent) },
+          { path: 'relatorios', loadComponent: () => import('./configuracoes/relatorios/relatorios').then(m => m.RelatoriosComponent) },
+          { path: 'permissoes', loadComponent: () => import('./configuracoes/permissoes/permissoes').then(m => m.PermissoesComponent) },
+          { path: 'notificacoes', loadComponent: () => import('./configuracoes/notificacoes/notificacoes').then(m => m.NotificacoesComponent) },
+          { path: '', redirectTo: 'perfil', pathMatch: 'full' }
         ]
       }
     ]
   },
 
-  {
-  path: 'recuperar-senha',
-  loadComponent: () => import('./auth/login/login').then(m => m.LoginComponent)
-},
-
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // Rota coringa
   { path: '**', redirectTo: 'login' }
 ];
 

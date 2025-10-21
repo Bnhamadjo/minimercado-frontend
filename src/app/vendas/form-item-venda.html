@@ -13,5 +13,15 @@
   <label>Preço Unitário:</label>
   <input type="number" [(ngModel)]="item.preco_unitario" name="preco_unitario" required min="0" />
 
+  <select [disabled]="!permiteParcelamento">
+  <option value="1x">À vista</option>
+  <option value="2x">2x</option>
+  <option value="3x">3x</option>
+</select>
+
+<div *ngIf="!permiteParcelamento" class="alert alert-warning">
+  Parcelamento está desativado nas configurações.
+</div>
+
   <button type="submit" [disabled]="itemForm.invalid">Adicionar</button>
 </form>
