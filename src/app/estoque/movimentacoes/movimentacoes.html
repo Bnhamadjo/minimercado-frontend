@@ -21,6 +21,8 @@
   </div>
 
   <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
+  <p>Estoque atual: {{ getEstoque(novaMovimentacao.produto_id) }}</p>
+  
 </form>
 
 <form (ngSubmit)="registrarMovimentacao()" class="registro-form">

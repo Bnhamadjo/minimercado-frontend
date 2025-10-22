@@ -10,14 +10,17 @@
           "style": "scss"
         }
       },
+
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "browser": "src/main.ts",
+            "outputPath": "dist/minimercado-frontend",
+            "index": "src/index.html",
+            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -58,18 +61,21 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          "builder": "@angular/build:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "minimercado-frontend:build:production"
-            },
-            "development": {
-              "buildTarget": "minimercado-frontend:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
+          "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+          "proxyConfig": "proxy.conf.json"
+       },
+         "configurations": {
+         "production": {
+         "buildTarget": "minimercado-frontend:build:production"
         },
+         "development": {
+         "buildTarget": "minimercado-frontend:build:development"
+       }
+   },
+         "defaultConfiguration": "development"
+  },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
         },

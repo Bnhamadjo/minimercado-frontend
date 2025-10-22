@@ -16,6 +16,7 @@ export class MovimentacoesEstoqueComponent {
 
   produtos: any[] = [];
   movimentacoes: any[] = [];
+  vendas: any[] = [];
 
   novaMovimentacao = {
     produto_id: '',
@@ -67,10 +68,16 @@ buscarMovimentacoes() {
   });
 }
 
+getEstoque(produtoId: string): number {
+  const produto = this.produtos.find(p => p.id === produtoId);
+  return produto ? produto.estoque : 0;
+}
 
   getHeaders() {
     return {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     };
   }
+
+
 }

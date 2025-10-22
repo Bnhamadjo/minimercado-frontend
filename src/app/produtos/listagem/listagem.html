@@ -1,47 +1,48 @@
-<h2 class="titulo">📊 Histórico de Vendas</h2>
+<h2>📦 Produtos Cadastrados</h2>
 
-<form (ngSubmit)="buscarVendas()" class="filtro-form">
-  <div class="form-group">
-    <label for="data_inicio">Data Início:</label>
-    <input type="date" [(ngModel)]="filtros.data_inicio" name="data_inicio" id="data_inicio" />
-  </div>
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Código de Barras</th>
+      <th>Preço</th>
+      <th>Estoque</th>
+      <th>Categoria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let produto of produtos">
+      <td>{{ produto.nome }}</td>
+      <td>{{ produto.codigo_barras }}</td>
+      <td>{{ produto.preco | currency:'XOF' }}</td>
+      <td>{{ produto.quantidade }}</td>
+      <td>{{ produto.categoria?.nome }}</td>
+    </tr>
+  </tbody>
+</table>
 
-  <div class="form-group">
-    <label for="data_fim">Data Fim:</label>
-    <input type="date" [(ngModel)]="filtros.data_fim" name="data_fim" id="data_fim" />
-  </div>
+<div class="filtros">
+  <input type="text" [(ngModel)]="filtroNome" placeholder="Filtrar por nome" />
+  
+ <select [(ngModel)]="filtroCategoria">
+  <option value="">Todas as categorias</option>
+  <option *ngFor="let cat of categorias" [value]="cat.nome">{{ cat.nome }}</option>
+</select>
 
-  <div class="form-group">
-    <label for="produto_id">Produto:</label>
-    <select [(ngModel)]="filtros.produto_id" name="produto_id" id="produto_id">
-      <option value="">Todos</option>
-      <option *ngFor="let p of produtos" [value]="p.id">{{ p.nome }}</option>
-    </select>
-  </div>
+  <input type="number" [(ngModel)]="precoMin" placeholder="Preço mínimo" />
+  <input type="number" [(ngModel)]="precoMax" placeholder="Preço máximo" />
 
-  <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
-</form>
-
-<div *ngFor="let venda of vendas" class="venda-card">
-  <h3>🧾 Venda #{{ venda.id }} - {{ venda.data_venda | date:'short' }}</h3>
-  <p><strong>Total:</strong> {{ venda.total | currency:'XOF':'symbol':'1.0-0' }}</p>
-
-  <table class="tabela-venda">
-    <thead>
-      <tr>
-        <th>Produto</th>
-        <th>Qtd</th>
-        <th>Preço Unitário</th>
-        <th>Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of venda.itens">
-        <td>{{ item.produto?.nome }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>{{ item.preco_unitario }}</td>
-        <td>{{ item.subtotal }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <button (click)="aplicarFiltros()">Filtrar</button>
+  <button (click)="limparFiltros()">Limpar</button>
+  <div class="opcoes">
+  <button (click)="ordenarPor('nome')">Ordenar por Nome</button>
+  <button (click)="ordenarPor('preco')">Ordenar por Preço</button>
+  <button (click)="exportarCSV()">Exportar CSV</button>
 </div>
+
+  <div class="opcoes-cadastro">
+    <button (click)="irParaCadastro()">➕ Cadastrar Novo Produto</button>
+  </div>
+</div>
+
+
