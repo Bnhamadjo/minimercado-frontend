@@ -22,7 +22,7 @@
     </tbody>
   </table>
 
-  <h3 class="recibo-total">Total: {{ venda.total | currency:'XOF':'symbol':'1.0-0' }}</h3>
+ <h3 class="recibo-total">Total: {{ totalVenda | currency:'XOF':'symbol':'1.0-0' }}</h3>
 
   <button class="btn-imprimir" (click)="imprimir()">🖨️ Imprimir</button>
 </div>

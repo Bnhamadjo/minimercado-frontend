@@ -37,6 +37,11 @@ export class ConfiguracoesService {
     return this.http.get(`${this.apiUrl}/perfil`, { headers: this.getHeaders() });
   }
 
+  // Obtém as configurações da loja
+  getConfiguracoesLoja(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/loja`, { headers: this.getHeaders() });
+  }
+
   // Atualiza as configurações da loja
   atualizarLoja(data: FormData): Observable<any> {
   return this.http.put(`${this.apiUrl}/loja`, data, {
@@ -55,6 +60,11 @@ export class ConfiguracoesService {
   atualizarEstoque(data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/estoque`, data, { headers: this.getHeaders() });
   }
+
+  obterConfiguracoesEstoque(): Observable<any> {
+  return this.http.get('/api/configuracoes/estoque');
+}
+
 
   // Atualiza as configurações de relatórios
   atualizarRelatorios(data: any): Observable<any> {

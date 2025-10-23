@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -13,6 +13,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 export class ReciboComponent {
   private http = inject(HttpClient);
   private route = inject(ActivatedRoute);
+   private cdr = inject(ChangeDetectorRef);
 
   venda: any;
   constructor() {}
@@ -25,15 +26,16 @@ export class ReciboComponent {
 
     this.http.get(`http://localhost:8000/api/vendas/${id}`, { headers }).subscribe((res: any) => {
       this.venda = res;
+      this.cdr.detectChanges();
     });
   }
 
- get totalVenda(): number {
+get totalVenda(): number {
   if (!this.venda || !this.venda.itens) return 0;
 
-  return this.venda.itens.reduce((total: any, item: { subtotal: number; quantidade: number; preco_unitario: number; }) => {
-    const subtotal = item.subtotal ?? item.quantidade * item.preco_unitario;
-    return total + (subtotal || 0);
+  return this.venda.itens.reduce((total: number, item: any) => {
+    const subtotal = Number(item.subtotal) || (Number(item.quantidade) * Number(item.preco_unitario));
+    return total + subtotal;
   }, 0);
 }
   imprimir() {

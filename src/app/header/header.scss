@@ -1,0 +1,19 @@
+.header-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.logo {
+  height: 45px;
+  margin-bottom: 5px;
+}
+
+.nome-loja {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}

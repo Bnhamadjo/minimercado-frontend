@@ -101,10 +101,30 @@ irParaCadastro(): void {
   });
 }
 
-  exportarCSV(): void {
-    // lógica para exportar produtosFiltrados como CSV
-    // posso te ajudar com isso se quiser
-  }
+ exportarCSV(): void {
+  const linhas = [
+    ['Nome', 'Código de Barras', 'Preço', 'Estoque', 'Categoria'],
+    ...this.produtosFiltrados.map(p => [
+      p.nome,
+      p.codigo_barras,
+      Number(p.preco).toFixed(2).replace('.', ','), // corrigido aqui
+      p.quantidade.toString(),
+      p.categoria?.nome || ''
+    ])
+  ];
+
+  const csvContent = linhas.map(l => l.join(';')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'produtos.csv');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
   get headers(): HttpHeaders {
     return new HttpHeaders({

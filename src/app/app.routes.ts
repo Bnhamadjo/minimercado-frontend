@@ -15,6 +15,7 @@ import { MovimentacoesEstoqueComponent } from './estoque/movimentacoes/movimenta
 import { FornecedorComponent } from './fornecedores/fornecedor.component';
 import { CategoriaComponent } from './categorias/categoria.component';
 import { ListagemItensComponent } from './vendas/listagem-itens';
+import { EstoqueComponent } from './estoque/estoque';
 
 export const routes: Routes = [
   // Redirecionamento raiz para login
@@ -44,11 +45,20 @@ export const routes: Routes = [
       { path: 'vendas/registro', component: RegistroComponent },
       { path: 'vendas/listagem', component: ListagemVendasComponent },
       { path: 'vendas/recibo/:id', component: ReciboComponent },
-      { path: 'estoque/alerta', component: AlertaBaixoEstoqueComponent },
-      { path: 'estoque/movimentacoes', component: MovimentacoesEstoqueComponent },
       { path: 'categorias', component: CategoriaComponent },
       { path: 'fornecedores', component: FornecedorComponent },
       { path: 'vendas/itens', component: ListagemItensComponent },
+
+     {
+      path: 'estoque',
+      component: EstoqueComponent,
+      children: [
+       { path: 'movimentacoes', component: MovimentacoesEstoqueComponent },
+      { path: 'alerta', component: AlertaBaixoEstoqueComponent },
+     { path: '', redirectTo: 'movimentacoes', pathMatch: 'full' } // opcional: redireciona para movimentações
+      ]
+      },
+
       {
         path: 'configuracoes',
         loadComponent: () => import('./configuracoes/configuracoes').then(m => m.ConfiguracoesComponent),

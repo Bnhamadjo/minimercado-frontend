@@ -40,7 +40,7 @@ filtros = {
       this.produtos = res;
     });
 
-    this.http.get('http://localhost:8000/api/movimentacoes', { headers }).subscribe((res: any) => {
+    this.http.get('http://localhost:8000/api/estoque/movimentacoes', { headers }).subscribe((res: any) => {
       this.movimentacoes = res;
     });
   }
@@ -48,7 +48,7 @@ filtros = {
   registrarMovimentacao() {
     const headers = this.getHeaders();
 
-    this.http.post('http://localhost:8000/api/movimentacoes', this.novaMovimentacao, { headers }).subscribe(() => {
+    this.http.post('http://localhost:8000/api/estoque/movimentacoes', this.novaMovimentacao, { headers }).subscribe(() => {
       alert('Movimentação registrada!');
       this.novaMovimentacao = { produto_id: '', tipo: 'entrada', quantidade: 1, motivo: '' };
       this.ngOnInit(); // recarrega dados
@@ -63,7 +63,7 @@ buscarMovimentacoes() {
   if (this.filtros.data_fim) params.data_fim = this.filtros.data_fim;
   if (this.filtros.tipo) params.tipo = this.filtros.tipo;
 
-  this.http.get('http://localhost:8000/api/movimentacoes', { headers, params }).subscribe((res: any) => {
+  this.http.get('http://localhost:8000/api/estoque/movimentacoes', { headers, params }).subscribe((res: any) => {
     this.movimentacoes = res;
   });
 }

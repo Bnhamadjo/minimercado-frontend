@@ -1,36 +1,35 @@
-
 <div class="dashboard">
   <h2 class="dashboard-title">📊 Estatísticas do Mini Mercado</h2>
 
- <div class="card-container">
-  <div class="card card-produtos">
-    <div class="card-icon">🛒</div>
-    <div class="card-content">
-      <div class="card-title">Produtos</div>
-      <div class="card-value">{{ stats.total_produtos }}</div>
+  <div class="card-container">
+    <div class="card card-produtos" (click)="navegarPara('produtos')">
+      <div class="card-icon">🛒</div>
+      <div class="card-content">
+        <div class="card-title">Produtos</div>
+        <div class="card-value">{{ stats.total_produtos }}</div>
+      </div>
     </div>
-  </div>
 
-  <div class="card card-vendas">
-    <div class="card-icon">📦</div>
-    <div class="card-content">
-      <div class="card-title">Vendas</div>
-      <div class="card-value">{{ stats.total_vendas }}</div>
+    <div class="card card-vendas" (click)="navegarPara('vendas')">
+      <div class="card-icon">📦</div>
+      <div class="card-content">
+        <div class="card-title">Vendas</div>
+        <div class="card-value">{{ stats.total_vendas }}</div>
+      </div>
     </div>
-  </div>
 
-  <div class="card card-total">
-    <div class="card-icon">💰</div>
-    <div class="card-content">
-      <div class="card-title">Total Vendido</div>
-      <div class="card-value">
-        {{ stats.valor_total_vendido | currency:'XOF':'symbol':'1.0-0' }}
+    <div class="card card-total">
+      <div class="card-icon">💰</div>
+      <div class="card-content">
+        <div class="card-title">Total Vendido</div>
+        <div class="card-value">
+          {{ stats.valor_total_vendido | currency:'XOF':'symbol':'1.0-0' }}
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<hr class="divisor" />
+  <hr class="divisor" />
 
   <div class="grafico-container" *ngIf="chartData">
     <canvas baseChart

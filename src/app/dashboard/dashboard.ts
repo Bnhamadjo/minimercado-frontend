@@ -4,6 +4,7 @@ import { ChartConfiguration } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,10 @@ import { BaseChartDirective } from 'ng2-charts';
 })
 export class DashboardComponent implements OnInit {
   stats: any = {};
+  total_produtos: 0 | undefined
+    total_vendas: 0 | undefined
+
+
   chartData: ChartConfiguration<'line'>['data'] | null = null;
   chartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
@@ -25,14 +30,17 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
+
 
   ngOnInit(): void {
     this.loadStats();
     this.loadChartData();
   }
 
+  
   private loadStats(): void {
     const svc: any = this.dashboardService as any;
     if (svc && typeof svc.getStats === 'function') {
@@ -59,4 +67,9 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+    navegarPara(destino: string): void {
+    this.router.navigate([`/${destino}`]);
+  }
+
 }

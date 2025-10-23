@@ -1,0 +1,22 @@
+<div class="estoque-container">
+  <h2>Gestão de Estoque</h2>
+
+  <!-- Componente de movimentações -->
+  <app-movimentacoes-estoque
+    (movimentacaoRegistrada)="onMovimentacaoRegistrada()">
+  </app-movimentacoes-estoque>
+
+    <!-- Componente de alerta de baixo estoque -->
+    <app-alerta-baixo-estoque
+  [limiteMinimo]="alertaMinimo"
+  (alertaAtualizado)="onAlertaAtualizado()">
+</app-alerta-baixo-estoque>
+
+
+
+  <!-- Indicadores de atualização -->
+  <div class="status-indicadores">
+    <p *ngIf="movimentacoesAtualizadas">✅ Movimentações atualizadas</p>
+    <p *ngIf="alertasAtualizados">✅ Alertas de estoque atualizados</p>
+  </div>
+</div>
