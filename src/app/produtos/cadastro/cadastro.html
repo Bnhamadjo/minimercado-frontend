@@ -22,12 +22,12 @@
       </mat-select>
     </mat-form-field>
 
-    <zxing-scanner
-      [formats]="formats"
-      [device]="selectedDevice"
-      [autostart]="true"
-      (scanSuccess)="onCodeResult($event)">
-    </zxing-scanner>
+   <zxing-scanner
+  [formats]="formats"
+  [device]="selectedDevice"
+  [autostart]="true"
+  (scanSuccess)="onCodeResult($event)">
+</zxing-scanner>
   </div>
 
   <mat-form-field appearance="outline" class="campo">
