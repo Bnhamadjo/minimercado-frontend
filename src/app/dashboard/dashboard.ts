@@ -68,8 +68,18 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-    navegarPara(destino: string): void {
-    this.router.navigate([`/${destino}`]);
+navegarPara(destino: string) {
+  switch (destino) {
+    case 'produtos':
+      this.router.navigate(['/produtos/listagem']);
+      break;
+    case 'vendas':
+      this.router.navigate(['/vendas/listagem']);
+      break;
+    default:
+      break;
   }
+}
+
 
 }
