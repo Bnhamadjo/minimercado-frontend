@@ -1,4 +1,4 @@
-<h2>Gestão de Fornecedores</h2>
+<h2> ⚙️ Gestão de Fornecedores</h2>
 
 <form (ngSubmit)="salvarFornecedor()">
   <input [(ngModel)]="fornecedor.nome" name="nome" placeholder="Nome" required />
@@ -10,9 +10,12 @@
 
 <ul>
   <li *ngFor="let f of fornecedores">
-    {{ f.nome }} - {{ f.telefone }} - {{ f.email }}
-    <button (click)="editar(f)">Editar</button>
-  <button (click)="deletar(f.id!)">Excluir</button>
-
+    <div class="info">
+      {{ f.nome }} - {{ f.telefone }} - {{ f.email }}
+    </div>
+    <div class="actions">
+      <button (click)="editar(f)">Editar</button>
+      <button class="excluir" (click)="deletar(f.id!)">Excluir</button>
+    </div>
   </li>
 </ul>

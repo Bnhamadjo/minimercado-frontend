@@ -43,6 +43,19 @@ export class ListagemVendasComponent implements OnInit {
     });
   }
 
+  abrirRegistro() {
+  const largura = screen.width;
+  const altura = screen.height;
+
+  const novaJanela = window.open(
+    '/vendas/registro',
+    '_blank',
+    `toolbar=no,scrollbars=no,resizable=no,top=0,left=0,width=${largura},height=${altura}`
+  );
+
+  novaJanela?.focus();
+}
+
   aplicarFiltros(): void {
     this.vendasFiltradas = this.vendas.filter(v => {
       const dataVenda = new Date(v.data_venda);

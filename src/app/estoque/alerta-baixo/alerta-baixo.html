@@ -1,33 +1,40 @@
-<div style="margin-bottom: 1rem;">
-  <input type="text" [(ngModel)]="filtroNome" placeholder="🔍 Filtrar por nome" />
-  <select [(ngModel)]="filtroCategoria">
-    <option value="">Todas as categorias</option>
-    <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
-  </select>
- 
+<div class="alerta-container">
+  <div class="filtros">
+    <input type="text" [(ngModel)]="filtroNome" placeholder="🔍 Filtrar por nome" />
+    <select [(ngModel)]="filtroCategoria">
+      <option value="">Todas as categorias</option>
+      <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+    </select>
+  </div>
+
+  <p *ngIf="produtosFiltrados.length > 0" class="alerta-estoque">
+    ⚠️ Atenção! Existem {{ produtosFiltrados.length }} produto(s) com estoque igual ou abaixo de {{ limiteMinimo }} unidades.
+  </p>
+
+  <p *ngIf="produtosFiltrados.length === 0" class="mensagem-ok">
+    ✅ Todos os produtos estão com estoque acima de {{ limiteMinimo }} unidades.
+  </p>
+
+  <table *ngIf="produtosFiltrados.length > 0" class="tabela-estoque">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Código de Barras</th>
+        <th>Estoque Atual</th>
+        <th>Estoque Mínimo<br><small>(limite: {{ limiteMinimo }})</small></th>
+        <th>Categoria</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of produtosFiltrados">
+        <td>{{ p.nome }}</td>
+        <td>{{ p.codigo_barras }}</td>
+        <td [ngClass]="{ 'estoque-baixo': p.estoqueAtual <= limiteMinimo }">
+          {{ p.estoqueAtual }}
+        </td>
+        <td>{{ limiteMinimo }}</td>
+        <td>{{ p.categoria?.nome }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-
-<p *ngIf="produtosFiltrados.length === 0">
-  ✅ Todos os produtos estão com estoque acima de {{ limiteMinimo }} unidades.
-</p>
-
-<table *ngIf="produtosFiltrados.length > 0" border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>Produto</th>
-      <th>Código de Barras</th>
-      <th>Estoque Atual</th>
-      <th>Estoque Mínimo</th>
-      <th>Categoria</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let p of produtosFiltrados">
-      <td>{{ p.nome }}</td>
-      <td>{{ p.codigo_barras }}</td>
-      <td style="color: red;"><strong>{{ p.estoqueAtual }}</strong></td>
-      <td>{{ p.estoque_minimo }}</td>
-      <td>{{ p.categoria?.nome }}</td>
-    </tr>
-  </tbody>
-</table>

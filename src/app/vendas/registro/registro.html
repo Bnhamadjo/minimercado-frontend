@@ -34,3 +34,9 @@
 <button class="btn-finalizar" (click)="registrarVenda()" *ngIf="itens.length > 0">
   ✅ Finalizar Venda
 </button>
+
+<button class="btn-limpar" (click)="limparRegistro()" *ngIf="itens.length > 0">
+  🧹 Limpar Registro
+</button>
+    
+   <button (click)="fechar()">❌ Sair da Tela Cheia</button>

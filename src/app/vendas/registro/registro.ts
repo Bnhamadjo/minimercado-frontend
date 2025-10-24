@@ -26,7 +26,26 @@ export class RegistroComponent {
   private router = inject(Router);
 
   // Scanner
-  formats: BarcodeFormat[] = [BarcodeFormat.EAN_13, BarcodeFormat.CODE_128];
+  formats: BarcodeFormat[] = [
+  BarcodeFormat.AZTEC,
+  BarcodeFormat.CODABAR,
+  BarcodeFormat.CODE_39,
+  BarcodeFormat.CODE_93,
+  BarcodeFormat.CODE_128,
+  BarcodeFormat.DATA_MATRIX,
+  BarcodeFormat.EAN_8,
+  BarcodeFormat.EAN_13,
+  BarcodeFormat.ITF,
+  BarcodeFormat.MAXICODE,
+  BarcodeFormat.PDF_417,
+  BarcodeFormat.QR_CODE,
+  BarcodeFormat.RSS_14,
+  BarcodeFormat.RSS_EXPANDED,
+  BarcodeFormat.UPC_A,
+  BarcodeFormat.UPC_E,
+  BarcodeFormat.UPC_EAN_EXTENSION
+];
+
   availableDevices: MediaDeviceInfo[] = [];
   selectedDevice: MediaDeviceInfo | undefined;
   codigoCapturado = false;
@@ -42,6 +61,28 @@ export class RegistroComponent {
       this.selectedDevice = this.availableDevices[0];
     });
   }
+
+  abrirRegistro() {
+  const largura = screen.width;
+  const altura = screen.height;
+
+  const novaJanela = window.open(
+    '/vendas/registro',
+    '_blank',
+    `toolbar=no,scrollbars=no,resizable=no,top=0,left=0,width=${largura},height=${altura}`
+  );
+
+  novaJanela?.focus();
+}
+
+  fechar() {
+    window.close();
+  }
+
+limparRegistro() {
+  this.itens = [];
+  this.total = 0;
+}
 
   get headers() {
     return {

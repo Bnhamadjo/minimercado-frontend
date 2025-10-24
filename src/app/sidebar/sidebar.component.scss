@@ -5,11 +5,11 @@
   height: 100vh;
   position: fixed;
   padding: 1rem;
-
+  
   .logo {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
   }
 
   nav ul {
@@ -17,14 +17,14 @@
     padding: 0;
 
     li {
-      padding: 0.8rem 1rem;
+      padding: 0.8rem 0.5rem;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: 3px;
       transition: background 0.3s;
 
       &:hover,
       &.active {
-        background-color: #34495e;
+        background-color: #436c94;
       }
     }
   }

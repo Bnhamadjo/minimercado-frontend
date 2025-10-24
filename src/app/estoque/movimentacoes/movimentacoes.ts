@@ -45,15 +45,22 @@ filtros = {
     });
   }
 
-  registrarMovimentacao() {
-    const headers = this.getHeaders();
+registrarMovimentacao() {
+  const headers = this.getHeaders();
 
-    this.http.post('http://localhost:8000/api/estoque/movimentacoes', this.novaMovimentacao, { headers }).subscribe(() => {
-      alert('Movimentação registrada!');
-      this.novaMovimentacao = { produto_id: '', tipo: 'entrada', quantidade: 1, motivo: '' };
-      this.ngOnInit(); // recarrega dados
+  this.http.post('http://localhost:8000/api/estoque/movimentacoes', this.novaMovimentacao, { headers })
+    .subscribe({
+      next: () => {
+        alert('Movimentação registrada!');
+        this.novaMovimentacao = { produto_id: '', tipo: 'entrada', quantidade: 1, motivo: '' };
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error('Erro ao registrar movimentação:', err);
+        alert('Erro ao registrar movimentação. Verifique os dados ou a conexão com o servidor.');
+      }
     });
-  }
+}
 
 buscarMovimentacoes() {
   const headers = this.getHeaders();

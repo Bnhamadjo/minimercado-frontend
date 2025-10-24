@@ -1,59 +1,60 @@
-
 @use "sass:color";
 
-$primary-color: #17a2b8;
-$text-color: #333;
-$border-color: color.adjust($text-color, $lightness: 60%);
-$hover-color: color.adjust($primary-color, $lightness: -10%);
-$button-text: #fff;
-$form-bg: #fefefe;
-$success-bg: #d4edda;
-$success-text: #155724;
+$primary-color: #2c3e50;
+$accent-color: #3498db;
+$text-color: #2f2f2f;
+$border-color: #e0e0e0;
+$success-bg: #eafaf1;
+$success-text: #27ae60;
 
 h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
   color: $primary-color;
   font-weight: 600;
+  text-align: center;
 }
 
 form {
-  background-color: $form-bg;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
-  max-width: 500px;
+  max-width: 600px;
+  margin: 0 auto;
 
   input {
     flex: 1;
-    padding: 10px;
+    padding: 0.75rem 1rem;
     border: 1px solid $border-color;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 1rem;
     color: $text-color;
+    transition: border-color 0.3s;
 
     &:focus {
       outline: none;
-      border-color: $primary-color;
-      box-shadow: 0 0 0 2px color.adjust($primary-color, $lightness: 40%);
+      border-color: $accent-color;
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
     }
   }
 
   button[type="submit"] {
-    background-color: $primary-color;
-    color: $button-text;
-    padding: 10px 16px;
+    background-color: $accent-color;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
     border: none;
-    border-radius: 4px;
-    font-weight: bold;
+    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: $hover-color;
+      background-color: color.adjust($accent-color, $lightness: -10%);
     }
   }
 }
@@ -61,50 +62,155 @@ form {
 .mensagem-sucesso {
   background-color: $success-bg;
   color: $success-text;
-  padding: 10px 16px;
-  border-radius: 6px;
-  margin-top: 15px;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem auto;
   font-weight: 500;
-  max-width: 500px;
+  max-width: 600px;
+  text-align: center;
 }
 
 ul {
-  margin-top: 30px;
+  margin-top: 2rem;
   list-style: none;
   padding: 0;
+  max-width: 600px;
+  margin-inline: auto;
 
   li {
     background-color: #fff;
-    border: 1px solid $border-color;
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    font-size: 16px;
+    font-size: 1rem;
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
 
     button {
-      background-color: $primary-color;
-      color: $button-text;
+      padding: 0.5rem 1rem;
       border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-weight: 500;
       cursor: pointer;
       transition: background-color 0.3s ease;
 
-      &:hover {
-        background-color: $hover-color;
-      }
-
-      &:nth-child(3) {
-        background-color: #dc3545;
+      &.editar {
+        background-color: #2c3e50;
+        color: #fff;
 
         &:hover {
-          background-color: color.adjust(#dc3545, $lightness: -10%);
+          background-color: #1a252f;
+        }
+      }
+
+      &.excluir {
+        background-color: #e74c3c;
+        color: #fff;
+
+        &:hover {
+          background-color: #c0392b;
         }
       }
     }
   }
 }
+
+/* inicio do arquivo categoria */
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: $text-color;
+  margin-top: 2rem;
+}
+.error {
+  text-align: center;
+  color: #e74c3c;
+  font-weight: 600;
+  margin-top: 2rem;
+}
+.no-categorias {
+  text-align: center;
+  color: $text-color;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+.categoria-nome {
+  font-weight: 500;
+}
+.categoria-acoes button {
+  margin-left: 0.5rem;
+}
+.categoria-acoes button:first-child {
+  margin-left: 0;
+}
+.categoria-acoes button:hover {
+  opacity: 0.9;
+}
+.categoria-acoes .editar {
+  background-color: $accent-color;
+}
+.categoria-acoes .excluir {
+  background-color: #e74c3c;
+}
+.categoria-acoes .editar:hover {
+  background-color: color.adjust($accent-color, $lightness: -10%);
+}
+.categoria-acoes .excluir:hover {
+  background-color: color.adjust(#e74c3c, $lightness: -10%);
+}
+.form-group {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: $text-color;
+}
+.form-group input {
+  padding: 0.5rem;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: $text-color;
+} 
+.form-group input:focus {
+  border-color: $accent-color;
+  box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+  outline: none;
+}
+button[type="submit"] {
+  margin-top: 1rem;
+  background-color: $accent-color;
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust($accent-color, $lightness: -10%);
+  }
+} 
+@media (max-width: 600px) {
+  form {
+    flex-direction: column;
+  }
+
+  .form-group {
+    flex: 1 1 100%;
+  }
+}
+
+/* Fim do arquivo categoria.component.scss */

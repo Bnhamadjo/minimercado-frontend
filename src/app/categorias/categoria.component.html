@@ -1,15 +1,18 @@
-<h2>Gestão de Categorias</h2>
+<h2> ⚙️ Gestão de Categorias</h2>
 
 <form (ngSubmit)="salvarCategoria()">
   <input [(ngModel)]="categoria.nome" name="nome" placeholder="Nome da categoria" required />
   <button type="submit">Salvar</button>
 </form>
+
 <p *ngIf="mensagem" class="mensagem-sucesso">{{ mensagem }}</p>
+
 <ul>
   <li *ngFor="let cat of categorias">
-    {{ cat.nome }}
-    <button (click)="editar(cat)">Editar</button>
-    <button (click)="deletar(cat.id!)">Excluir</button>
+    <span>{{ cat.nome }}</span>
+    <div class="actions">
+      <button class="editar" (click)="editar(cat)">Editar</button>
+      <button class="excluir" (click)="deletar(cat.id!)">Excluir</button>
+    </div>
   </li>
-  
 </ul>
