@@ -78,9 +78,11 @@ export class ListagemVendasComponent implements OnInit {
     this.vendasFiltradas = [...this.vendas];
   }
 
-  verDetalhes() {
-  console.log('Detalhes das vendas filtradas:', this.vendasFiltradas);
-  // Aqui você pode abrir um modal, navegar para outra rota ou exibir mais dados
+verDetalhes(): void {
+  const area = document.getElementById('area-impressao');
+  if (area) {
+    area.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 imprimirFiltrados() {
