@@ -22,7 +22,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { FornecedorComponent } from '../../fornecedores/fornecedor.component';
 import { FornecedorService } from '../../fornecedores/fornecedor.service';
 
-// Interfaces
 interface Produto {
   nome: string;
   codigo_barras: string;
@@ -90,6 +89,13 @@ export class CadastroComponent implements OnInit {
       this.availableDevices = devices.filter(d => d.kind === 'videoinput');
       this.selectedDevice = this.availableDevices[0];
     });
+  }
+
+  onPermissionResponse(hasPermission: boolean): void {
+    console.log('Permissão da câmera:', hasPermission);
+    if (!hasPermission) {
+      alert('⚠️ Acesso à câmera negado. Ative a permissão para o scanner funcionar.');
+    }
   }
 
   onCodeResult(result: string): void {
@@ -162,7 +168,7 @@ export class CadastroComponent implements OnInit {
     this.http.post('http://localhost:8000/api/produtos', this.produto, { headers })
       .subscribe({
         next: () => {
-          alert('Produto cadastrado com sucesso!');
+          alert('✅ Produto cadastrado com sucesso!');
           this.resetarFormulario();
         },
         error: (err) => {

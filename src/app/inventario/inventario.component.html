@@ -1,0 +1,57 @@
+<div class="inventario-container">
+  <div class="cards-resumo">
+    <div class="card">
+      <h3>📦 Valor em Estoque</h3>
+      <p>{{ dados.valor_total_estoque | currency:'FCFA':'symbol':'1.0-0' }}</p>
+    </div>
+    <div class="card">
+      <h3>💰 Vendas Totais</h3>
+      <p>{{ dados.valor_total_vendas | currency:'FCFA':'symbol':'1.0-0' }}</p>
+    </div>
+    <div class="card">
+      <h3>📈 Lucro Total</h3>
+      <p>{{ dados.lucro_estimado | currency:'FCFA':'symbol':'1.0-0' }}</p>
+    </div>
+  </div>
+
+  <div class="filtros">
+    <input type="text" placeholder="Filtrar Produto" [(ngModel)]="filtroProduto" (input)="aplicarFiltros()">
+    <input type="text" placeholder="Filtrar Categoria" [(ngModel)]="filtroCategoria" (input)="aplicarFiltros()">
+    <input type="text" placeholder="Filtrar Fornecedor" [(ngModel)]="filtroFornecedor" (input)="aplicarFiltros()">
+    <button (click)="limparFiltros()">Limpar</button>
+  </div>
+
+  <div id="area-impressao" class="tabela-produtos">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Código</th>
+          <th>Preço</th>
+          <th>Quantidade</th>
+          <th>Categoria</th>
+          <th>Fornecedor</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of produtosFiltrados">
+          <td>{{ p.nome }}</td>
+          <td>{{ p.codigo_barras }}</td>
+          <td>{{ p.preco | currency:'FCFA':'symbol':'1.0-0' }}</td>
+          <td>{{ p.quantidade }}</td>
+          <td>{{ p.categoria?.nome }}</td>
+          <td>{{ p.fornecedor?.nome }}</td>
+          <td>{{ (p.preco * p.quantidade) | currency:'FCFA':'symbol':'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button (click)="imprimirTabela()">🖨️ Imprimir</button>
+
+  <div class="graficos">
+    <canvas #graficoLucro></canvas>
+    <canvas #graficoMensal></canvas>
+  </div>
+</div>

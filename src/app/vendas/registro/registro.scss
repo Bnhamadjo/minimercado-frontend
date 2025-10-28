@@ -1,85 +1,80 @@
-@use "sass:color";
-
-// 🎨 Variáveis
-$primary-color: #27ae60;
-$danger-color: #e74c3c;
-$light-bg: #ffffff;
-$header-bg: #ecf0f1;
-$text-color: #2c3e50;
-$border-radius: 6px;
-$shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-// 🧾 Título da página
-.registro-titulo {
+.titulo {
   font-size: 24px;
-  margin-bottom: 20px;
-  color: $text-color;
-  border-bottom: 2px solid $primary-color;
-  padding-bottom: 5px;
-}
-
-// 📷 Scanner
-.scanner {
-  display: block;
-  margin-bottom: 20px;
-  border: 2px dashed $primary-color;
-  border-radius: $border-radius;
-  padding: 10px;
-}
-
-// ⚠️ Mensagem de erro
-.erro-msg {
-  color: $danger-color;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
+  text-align: center;
 }
 
-// 📋 Tabela de itens
+.divisor {
+  margin-bottom: 16px;
+}
+
+.scanner-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  zxing-scanner {
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+  }
+}
+
+.campo {
+  width: 100%;
+  max-width: 300px;
+}
+
+.erro-msg {
+  color: #d32f2f;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
 .registro-tabela {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 
-  th,
-  td {
-    border: 1px solid #ddd;
-    padding: 10px;
+  th, td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
     text-align: left;
   }
 
   th {
-    background-color: $header-bg;
+    background-color: #f5f5f5;
     font-weight: bold;
   }
 
-  tbody tr:nth-child(even) {
-    background-color: #f7f7f7;
-  }
-
-  tbody tr:hover {
-    background-color: color.adjust($primary-color, $lightness: 45%);
+  td:last-child {
+    text-align: center;
   }
 }
 
-// 💰 Total da venda
 .registro-total {
-  font-size: 18px;
-  color: $text-color;
-  margin-bottom: 15px;
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 24px;
 }
 
-// ✅ Botão de finalizar
-.btn-finalizar {
-  padding: 10px 20px;
-  background-color: $primary-color;
-  color: white;
-  border: none;
-  border-radius: $border-radius;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+.form-item-container {
+  margin-bottom: 24px;
+}
 
-  &:hover {
-    background-color: color.adjust($primary-color, $lightness: 45%);
-  }
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
 }

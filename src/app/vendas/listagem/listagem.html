@@ -1,10 +1,9 @@
-<div class="cabecalho-vendas">
+<section class="cabecalho-vendas">
   <h2 class="titulo-vendas">📊 Histórico de Vendas</h2>
   <button class="botao-registrar" (click)="abrirRegistro()">➕ Registrar Venda</button>
-</div>
+</section>
 
-<!--Formulário de filtros -->
-<div class="filtros-vendas">
+<section class="filtros-vendas">
   <input type="date" [(ngModel)]="filtroInicio" placeholder="Data início" />
   <input type="date" [(ngModel)]="filtroFim" placeholder="Data fim" />
 
@@ -16,20 +15,21 @@
   <input type="number" [(ngModel)]="filtroMinTotal" placeholder="Valor mínimo" />
   <input type="number" [(ngModel)]="filtroMaxTotal" placeholder="Valor máximo" />
 
-  <button (click)="aplicarFiltros()">Filtrar</button>
-  <button (click)="limparFiltros()">Limpar</button>
-  
-</div>
+  <button class="btn-filtrar" (click)="aplicarFiltros()">Filtrar</button>
+  <button class="btn-limpar" (click)="limparFiltros()">Limpar</button>
+</section>
 
-<hr/>
+<hr class="divisor-acao" />
 
-<div class="acoes-filtro">
-  <button (click)="verDetalhes()">🔍 Ver Detalhes</button>
-  <button (click)="imprimirFiltrados()">🖨️ Imprimir Filtrados</button>
+<section class="acoes-filtro">
+  <button class="btn-detalhes" (click)="verDetalhes()">🔍 Ver Detalhes</button>
+  <button class="btn-imprimir" (click)="imprimirFiltrados()">🖨️ Imprimir Filtrados</button>
+</section>
 
-<hr/>
-  <div id="area-impressao">
-  <div *ngFor="let venda of vendasFiltradas" class="venda-card">
+<hr class="divisor-acao" />
+
+<section id="area-impressao">
+  <article *ngFor="let venda of vendasFiltradas" class="venda-card">
     <h3 class="venda-titulo">🧾 Venda #{{ venda.id }} - {{ venda.data_venda | date:'short' }}</h3>
     <p class="venda-total"><strong>Total:</strong> {{ venda.total | currency:'XOF':'symbol':'1.0-0' }}</p>
 
@@ -52,34 +52,6 @@
       </tbody>
     </table>
 
-    <hr />
-  </div>
-</div>
-</div>
-<hr/>
-
-<!-- Lista de vendas -->
-
-<div *ngFor="let venda of vendasFiltradas" class="venda-card">
-  <h3 class="venda-titulo">🧾 Venda #{{ venda.id }} - {{ venda.data_venda | date:'short' }}</h3>
-  <p class="venda-total"><strong>Total:</strong> {{ venda.total | currency:'XOF':'symbol':'1.0-0' }}</p>
-
-  <table class="tabela-itens">
-    <thead>
-      <tr>
-        <th>Produto</th>
-        <th>Qtd</th>
-        <th>Preço Unitário</th>
-        <th>Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of venda.itens">
-        <td>{{ item.produto?.nome }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>{{ item.preco_unitario }}</td>
-        <td>{{ item.subtotal }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <hr class="divisor-acao" />
+  </article>
+</section>

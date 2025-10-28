@@ -1,160 +1,125 @@
-@use "sass:color";
-
-$primary-color: #3498db;
-$light-bg: #f9f9f9;
-$header-bg: #ecf0f1;
-$text-color: #2c3e50;
-$border-radius: 8px;
-$shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-
-.titulo-vendas {
-  font-size: 26px;
-  margin-bottom: 25px;
-  color: $text-color;
-  border-bottom: 2px solid $primary-color;
-  padding-bottom: 5px;
-}
-
-.venda-card {
-  background-color: $light-bg;
-  border-left: 5px solid $primary-color;
-  padding: 20px;
-  margin-bottom: 30px;
-  border-radius: $border-radius;
-  box-shadow: $shadow;
-
-  .venda-titulo {
-    margin-top: 0;
-    font-size: 20px;
-    color: $text-color;
-  }
-
-  .venda-total {
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: color.adjust($text-color, $lightness: 20%);
-  }
-
-  .tabela-itens {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-
-    th {
-      background-color: $header-bg;
-      font-weight: bold;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-    tbody tr:hover {
-      background-color: color.adjust($primary-color, $lightness: 45%);
-    }
-  }
-}
-
-/* Estilos para impressão */
-
-
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  #area-impressao, #area-impressao * {
-    visibility: visible;
-  }
-
-  #area-impressao {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-}
-
 .cabecalho-vendas {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-}
+  margin-bottom: 20px;
 
-.botao-registrar {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  .titulo-vendas {
+    font-size: 24px;
+    font-weight: bold;
+  }
 
-.botao-registrar:hover {
-  background-color: #218838;
+  .botao-registrar {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
 }
 
 .filtros-vendas {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 12px;
+  margin-bottom: 20px;
 
   input,
-  select {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ccc;
+  select,
+  button {
+    padding: 8px;
+    font-size: 14px;
     border-radius: 4px;
-    font-size: 0.95rem;
-    min-width: 160px;
-    transition: border-color 0.3s;
-
-    &:focus {
-      border-color: #007bff;
-      outline: none;
-    }
+    border: 1px solid #ccc;
   }
 
-  button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
+  .btn-filtrar {
     background-color: #007bff;
     color: white;
-    transition: background-color 0.3s;
+    border: none;
 
     &:hover {
       background-color: #0056b3;
     }
+  }
 
-    &:nth-child(7) {
-      background-color: #28a745;
+  .btn-limpar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
 
-      &:hover {
-        background-color: #218838;
-      }
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+}
+
+.acoes-filtro {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .btn-detalhes,
+  .btn-imprimir {
+    padding: 10px 18px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.divisor-acao {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #ccc, #999, #ccc);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+}
+
+.venda-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  .venda-titulo {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .venda-total {
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .tabela-itens {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
     }
 
-    &:nth-child(8) {
-      background-color: #dc3545;
-
-      &:hover {
-        background-color: #c82333;
-      }
+    th {
+      background-color: #f1f1f1;
     }
   }
 }

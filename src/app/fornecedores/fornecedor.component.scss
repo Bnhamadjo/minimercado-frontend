@@ -99,6 +99,12 @@ ul {
         background-color: color.adjust($primary-color, $lightness: -10%);
       }
 
+      .divisor{
+        border: none;
+  border-top: 2px solid #e0e0e0;
+  margin: 2rem 0;
+      }
+
       &.excluir {
         background-color: #e74c3c;
 

@@ -16,6 +16,7 @@ import { FornecedorComponent } from './fornecedores/fornecedor.component';
 import { CategoriaComponent } from './categorias/categoria.component';
 import { ListagemItensComponent } from './vendas/listagem-itens';
 import { EstoqueComponent } from './estoque/estoque';
+import { InventarioComponent } from './inventario/inventario.component';
 
 export const routes: Routes = [
   // Redirecionamento raiz para login
@@ -48,6 +49,8 @@ export const routes: Routes = [
       { path: 'categorias', component: CategoriaComponent },
       { path: 'fornecedores', component: FornecedorComponent },
       { path: 'vendas/itens', component: ListagemItensComponent },
+      { path: '', redirectTo: 'inventario', pathMatch: 'full' },
+      { path: 'inventario', component: InventarioComponent },
 
      {
       path: 'estoque',

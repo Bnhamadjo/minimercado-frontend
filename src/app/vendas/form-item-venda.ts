@@ -47,11 +47,22 @@ ngOnInit(): void {
 
 }
 
-
-  adicionarItem() {
-    this.item.subtotal = this.item.quantidade * this.item.preco_unitario;
-    this.itemAdicionado.emit(this.item);
-    this.item = { produto_id: 0, quantidade: 1, preco_unitario: 0, parcelas: '1x',
- subtotal: 0, };
+adicionarItem() {
+  if (this.item.preco_unitario <= 0) {
+    alert('O preço unitário deve ser maior que zero.');
+    return;
   }
+
+  this.item.subtotal = this.item.quantidade * this.item.preco_unitario;
+  this.itemAdicionado.emit(this.item);
+
+  // Resetar o formulário
+  this.item = {
+    produto_id: 0,
+    quantidade: 1,
+    preco_unitario: 0,
+    parcelas: '1x',
+    subtotal: 0,
+  };
+}
 }

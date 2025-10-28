@@ -1,4 +1,5 @@
 <h2 class="titulo-form">📦 Cadastro de Produto</h2>
+<hr class="divisor" />
 
 <form (ngSubmit)="salvarProduto()" #produtoForm="ngForm" class="formulario-produto" autocomplete="off">
   <mat-form-field appearance="outline" class="campo">
@@ -7,11 +8,10 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="campo">
-    <mat-label>QR CODE</mat-label>
-    <input matInput type="text" name="qr_code" [(ngModel)]="produto.codigo_barras" required />
+    <mat-label>Código / QR</mat-label>
+    <input matInput type="text" name="codigo_barras" [(ngModel)]="produto.codigo_barras" required />
   </mat-form-field>
 
-  <!-- Scanner com seleção de câmera -->
   <div class="scanner-container">
     <mat-form-field appearance="outline" class="campo">
       <mat-label>Selecionar Câmera</mat-label>
@@ -22,12 +22,13 @@
       </mat-select>
     </mat-form-field>
 
-   <zxing-scanner
-  [formats]="formats"
-  [device]="selectedDevice"
-  [autostart]="true"
-  (scanSuccess)="onCodeResult($event)">
-</zxing-scanner>
+    <zxing-scanner
+      [formats]="formats"
+      [device]="selectedDevice"
+      [autostart]="true"
+      (scanSuccess)="onCodeResult($event)"
+      (permissionResponse)="onPermissionResponse($event)">
+    </zxing-scanner>
   </div>
 
   <mat-form-field appearance="outline" class="campo">

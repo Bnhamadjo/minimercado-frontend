@@ -1,169 +1,164 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component, OnInit, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { Router } from '@angular/router';
 import { BarcodeFormat } from '@zxing/library';
-import { ItemVenda } from '../item-venda.model';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 import { FormItemVendaComponent } from '../form-item-venda';
+import { MatIconModule } from '@angular/material/icon';
+
+export interface ItemVenda {
+  produto_id: number;
+  quantidade: number;
+  preco_unitario: number;
+  parcelas?: string;
+  produto?: { nome: string };
+}
 
 @Component({
-  selector: 'app-registro-venda',
+  selector: 'app-registro',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
     ZXingScannerModule,
-     FormItemVendaComponent
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatButtonModule,
+    FormItemVendaComponent,
+    MatIconModule
   ],
   templateUrl: './registro.html',
-  styleUrls: ['./registro.scss'],
+  styleUrls: ['./registro.scss']
 })
-export class RegistroComponent {
+export class RegistroComponent implements OnInit {
   private http = inject(HttpClient);
-  private router = inject(Router);
 
-  // Scanner
-  formats: BarcodeFormat[] = [
-  BarcodeFormat.AZTEC,
-  BarcodeFormat.CODABAR,
-  BarcodeFormat.CODE_39,
-  BarcodeFormat.CODE_93,
-  BarcodeFormat.CODE_128,
-  BarcodeFormat.DATA_MATRIX,
-  BarcodeFormat.EAN_8,
-  BarcodeFormat.EAN_13,
-  BarcodeFormat.ITF,
-  BarcodeFormat.MAXICODE,
-  BarcodeFormat.PDF_417,
-  BarcodeFormat.QR_CODE,
-  BarcodeFormat.RSS_14,
-  BarcodeFormat.RSS_EXPANDED,
-  BarcodeFormat.UPC_A,
-  BarcodeFormat.UPC_E,
-  BarcodeFormat.UPC_EAN_EXTENSION
-];
-
+  selectedDevice?: MediaDeviceInfo;
   availableDevices: MediaDeviceInfo[] = [];
-  selectedDevice: MediaDeviceInfo | undefined;
-  codigoCapturado = false;
+  formats: BarcodeFormat[] = [BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128];
 
-  // Venda
-  itens: any[] = [];
-  total = 0;
-  erro = '';
+  itens: ItemVenda[] = [];
+  erro: string = '';
+  total: number = 0;
 
-  constructor() {
+  formaPagamento: string = 'À vista';
+
+  ngOnInit(): void {
+    this.carregarCameras();
+  }
+
+  carregarCameras() {
     navigator.mediaDevices.enumerateDevices().then(devices => {
       this.availableDevices = devices.filter(d => d.kind === 'videoinput');
-      this.selectedDevice = this.availableDevices[0];
+      if (this.availableDevices.length) this.selectedDevice = this.availableDevices[0];
     });
   }
 
-  abrirRegistro() {
-  const largura = screen.width;
-  const altura = screen.height;
+  onCodeResult(result: string) {
+    if (!result) return;
 
-  const novaJanela = window.open(
-    '/vendas/registro',
-    '_blank',
-    `toolbar=no,scrollbars=no,resizable=no,top=0,left=0,width=${largura},height=${altura}`
-  );
-
-  novaJanela?.focus();
-}
-
-  fechar() {
-    window.close();
-  }
-
-limparRegistro() {
-  this.itens = [];
-  this.total = 0;
-}
-
-  get headers() {
-    return {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    };
-  }
-
-  
-
-  onCodeResult(codigo: string) {
-    console.log('Código escaneado:', codigo);
-    if (this.codigoCapturado) return;
-    this.codigoCapturado = true;
-
-    this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${codigo}`, { headers: this.headers })
-      .subscribe({
-        next: (res: any) => {
-          const produto = Array.isArray(res) ? res[0] : res;
-          if (!produto) {
-            this.erro = 'Produto não encontrado';
-            return;
-          }
-
-          const existente = this.itens.find(i => i.produto_id === produto.id);
-          if (existente) {
-            existente.quantidade += 1;
-            existente.subtotal = existente.quantidade * existente.preco_unitario;
+    this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${encodeURIComponent(result)}`, {
+      headers: this.getHeaders()
+    }).subscribe({
+      next: (res: any) => {
+        if (res && res.id) {
+          const itemExistente = this.itens.find(i => i.produto_id === res.id);
+          if (itemExistente) {
+            itemExistente.quantidade += 1;
           } else {
+            if (res.preco <= 0) {
+              this.erro = 'Produto com preço inválido.';
+              return;
+            }
+
             this.itens.push({
-              produto_id: produto.id,
-              nome: produto.nome,
+              produto_id: res.id,
               quantidade: 1,
-              preco_unitario: produto.preco,
-              subtotal: produto.preco,
+              preco_unitario: res.preco,
+              produto: { nome: res.nome }
             });
           }
-
           this.calcularTotal();
-          this.erro = '';
-        },
-        error: () => {
-          this.erro = 'Erro ao buscar produto';
+        } else {
+          this.erro = 'Produto não encontrado.';
         }
-      });
-
-    setTimeout(() => this.codigoCapturado = false, 3000);
+      },
+      error: () => this.erro = 'Erro ao buscar produto.'
+    });
   }
 
   inserirItem(item: ItemVenda) {
-  this.itens.push(item);
+    if (item.preco_unitario <= 0) {
+      this.erro = 'Preço unitário inválido.';
+      return;
+    }
+
+
+    this.itens.push(item);
+    this.calcularTotal();
+  }
+
+  removerItem(item: ItemVenda) {
+  this.itens = this.itens.filter(i => i !== item);
   this.calcularTotal();
 }
+
   calcularTotal() {
-    this.total = this.itens.reduce((sum, item) => sum + item.subtotal, 0);
+    this.total = this.itens.reduce((sum, item) => sum + item.quantidade * item.preco_unitario, 0);
   }
 
   registrarVenda() {
-    const payload = {
+    if (!this.itens.length) {
+      this.erro = 'Adicione pelo menos um item.';
+      return;
+    }
+
+    const venda = {
       valor_total: this.total,
+      forma_pagamento: 'À vista',
+      data_venda: new Date().toISOString(),
       itens: this.itens.map(i => ({
         produto_id: i.produto_id,
         quantidade: i.quantidade,
         preco_unitario: i.preco_unitario,
-      })),
+        parcelas: i.parcelas || '1x'
+      }))
     };
 
-    this.http.post('http://localhost:8000/api/vendas', payload, { headers: this.headers })
+    this.http.post('http://localhost:8000/api/vendas', venda, { headers: this.getHeaders() })
       .subscribe({
-        next: (res: any) => {
+        next: () => {
           alert('Venda registrada com sucesso!');
-          if (res && res.id) {
-            this.router.navigate(['/vendas/recibo', res.id]);
-          } else {
-            this.router.navigate(['/vendas']);
-          }
-          this.itens = [];
-          this.total = 0;
+          this.limparRegistro();
         },
-        error: () => {
-          this.erro = 'Erro ao registrar venda';
+        error: (err) => {
+          console.error('Erro ao registrar venda', err);
+          this.erro = 'Erro ao registrar venda.';
         }
       });
+  }
+
+  limparRegistro() {
+    this.itens = [];
+    this.total = 0;
+    this.erro = '';
+  }
+
+  fechar() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }
+
+  private getHeaders() {
+    return { Authorization: `Bearer ${localStorage.getItem('token')}` };
   }
 }

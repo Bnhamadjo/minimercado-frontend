@@ -1,42 +1,79 @@
-<h2 class="registro-titulo">🛒 Registro de Venda</h2>
+<h2 class="titulo">🧾 Registro de Vendas</h2>
+<hr class="divisor" />
 
-<zxing-scanner
-  class="scanner"
-  [formats]="formats"
-  (scanSuccess)="onCodeResult($event)">
-</zxing-scanner>
+<!-- Scanner e seleção de câmera -->
+<div class="scanner-container">
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Selecionar Câmera</mat-label>
+    <mat-select [(value)]="selectedDevice" aria-label="Selecionar câmera">
+      <mat-option *ngFor="let device of availableDevices" [value]="device">
+        {{ device.label || 'Câmera ' + device.deviceId }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
+  <zxing-scanner
+    [formats]="formats"
+    [device]="selectedDevice"
+    [autostart]="true"
+    (scanSuccess)="onCodeResult($event)">
+  </zxing-scanner>
+</div>
+
+<!-- Mensagens de erro -->
 <p *ngIf="erro" class="erro-msg">{{ erro }}</p>
 
+<!-- Forma de pagamento -->
+<mat-form-field appearance="outline" class="campo">
+  <mat-label>Forma de Pagamento</mat-label>
+  <mat-select [(value)]="formaPagamento">
+    <mat-option value="À vista">À vista</mat-option>
+    <mat-option value="Parcelado">Parcelado</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Tabela de itens -->
 <table class="registro-tabela" *ngIf="itens.length > 0">
   <thead>
     <tr>
       <th>Produto</th>
-      <th>Qtd</th>
-      <th>Preço</th>
+      <th>Preço Unitário (FCFA)</th>
+      <th>Quantidade</th>
       <th>Subtotal</th>
+      <th>Ações</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let item of itens">
-      <td>{{ item.nome }}</td>
+      <td>{{ item.produto?.nome }}</td>
+      <td>{{ item.preco_unitario | currency:'XOF':'symbol':'1.0-0' }}</td>
       <td>{{ item.quantidade }}</td>
-      <td>{{ item.preco_unitario }}</td>
-      <td>{{ item.subtotal }}</td>
+      <td>{{ (item.preco_unitario * item.quantidade) | currency:'XOF':'symbol':'1.0-0' }}</td>
+      <td>
+        <button mat-icon-button color="warn" (click)="removerItem(item)" aria-label="Remover item">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
 
-<h3 class="registro-total" *ngIf="total > 0">
-  Total: {{ total | currency:'XOF':'symbol':'1.0-0' }}
-</h3>
-<app-form-item-venda (itemAdicionado)="inserirItem($event)"></app-form-item-venda>
-<button class="btn-finalizar" (click)="registrarVenda()" *ngIf="itens.length > 0">
-  ✅ Finalizar Venda
-</button>
+<h3 class="registro-total" *ngIf="total > 0">💰 Total: {{ total | currency:'XOF':'symbol':'1.0-0' }}</h3>
 
-<button class="btn-limpar" (click)="limparRegistro()" *ngIf="itens.length > 0">
-  🧹 Limpar Registro
-</button>
-    
-   <button (click)="fechar()">❌ Sair da Tela Cheia</button>
+<!-- Formulário manual -->
+<div class="form-item-container">
+  <app-form-item-venda (itemAdicionado)="inserirItem($event)"></app-form-item-venda>
+</div>
+
+<!-- Botões -->
+<div class="botoes">
+  <button mat-raised-button color="primary" (click)="registrarVenda()" *ngIf="itens.length > 0">
+    💾 Registrar Venda
+  </button>
+  <button mat-button color="warn" (click)="limparRegistro()" *ngIf="itens.length > 0">
+    🧹 Limpar
+  </button>
+  <button mat-stroked-button color="accent" (click)="fechar()">
+    ❌ Sair da Tela Cheia
+  </button>
+</div>

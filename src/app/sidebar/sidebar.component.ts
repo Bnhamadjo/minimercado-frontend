@@ -29,6 +29,9 @@ export class SidebarComponent {
     { label: 'Preferências', route: '/preferencias' },
     { label: 'Suporte', route: '/suporte' },
     { label: 'Feedback', route: '/feedback' },
+    { label: 'Termos de Serviço', route: '/termos-servico' },
+    { label: 'Política de Privacidade', route: '/politica-privacidade' },
+    { label: 'Inventário', route: '/inventario' }
 
     
   ];
