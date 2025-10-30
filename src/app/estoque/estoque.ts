@@ -38,6 +38,8 @@ export class EstoqueComponent {
     }
   }
 
+  
+
   onAlertaAtualizado() {
     this.alertasAtualizados = true;
     console.log('Alertas de estoque atualizados.');

@@ -1,12 +1,16 @@
 @use "sass:color";
 
+// Cores e variáveis
 $primary-color: #2980b9;
 $success-color: #27ae60;
+$warning-color: #e67e22;
+$error-color: #c0392b;
 $header-bg: #ecf0f1;
 $text-color: #2c3e50;
 $border-radius: 6px;
 $shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
+// Título
 .estoque-titulo {
   font-size: 24px;
   margin-bottom: 25px;
@@ -15,6 +19,7 @@ $shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding-bottom: 5px;
 }
 
+// Formularios de filtro e registro
 .filtro-form,
 .registro-form {
   display: flex;
@@ -26,11 +31,12 @@ $shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   .form-group {
     display: flex;
     flex-direction: column;
-    min-width: 200px;
+    min-width: 180px;
 
     label {
       font-weight: bold;
       margin-bottom: 5px;
+      color: $text-color;
     }
 
     input,
@@ -38,29 +44,46 @@ $shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: $border-radius;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+      }
     }
   }
 
-  .btn-filtrar,
-  .btn-registrar {
+  button {
     padding: 10px 20px;
-    background-color: $primary-color;
-    color: white;
     border: none;
     border-radius: $border-radius;
     cursor: pointer;
+    color: white;
+    font-weight: bold;
     transition: background-color 0.3s ease;
 
-    &:hover {
-      background-color: color.adjust($primary-color, $lightness: 45%);
+    &.btn-filtrar {
+      background-color: $primary-color;
+      &:hover {
+        background-color: color.adjust($primary-color, $lightness: 45%);
+      }
+    }
+
+    &.btn-registrar {
+      background-color: $success-color;
+      &:hover {
+        background-color: color.adjust($success-color, $lightness: 45%);
+      }
     }
   }
 }
 
+// Tabela de movimentações
 .tabela-movimentacoes {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
+  font-size: 14px;
 
   th,
   td {
@@ -72,6 +95,7 @@ $shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   th {
     background-color: $header-bg;
     font-weight: bold;
+    color: $text-color;
   }
 
   tbody tr:nth-child(even) {
@@ -80,5 +104,102 @@ $shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   tbody tr:hover {
     background-color: color.adjust($primary-color, $lightness: 45%);
+    color: white;
+  }
+
+  td a {
+    color: $primary-color;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  td:nth-child(6) { // Estoque atual
+    font-weight: bold;
+    color: $success-color;
+  }
+
+  td:nth-child(7) { // Total vendido
+    font-weight: bold;
+    color: $warning-color;
   }
 }
+
+.link-detalhe {
+  color: #047d57;
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+// Responsividade
+@media (max-width: 768px) {
+  .filtro-form,
+  .registro-form {
+    flex-direction: column;
+
+    .form-group {
+      min-width: 100%;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .tabela-movimentacoes {
+    font-size: 12px;
+  }
+}
+
+// Tooltip para motivos longos
+td[title] {
+  position: relative;
+
+  &:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    left: 0;
+    background: $text-color;
+    color: white;
+    padding: 5px 8px;
+    border-radius: $border-radius;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+  }
+}
+
+.paginacao {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  button {
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  span {
+    font-weight: 500;
+  }
+}
+

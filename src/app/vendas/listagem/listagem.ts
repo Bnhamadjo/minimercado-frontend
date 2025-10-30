@@ -29,19 +29,28 @@ export class ListagemVendasComponent implements OnInit {
   today = new Date();
 
   ngOnInit(): void {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-    };
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+  };
 
-    this.vendaService.listar().subscribe((vendas: any[]) => {
-      this.vendas = vendas;
-      this.vendasFiltradas = [...vendas];
-    });
+  this.vendaService.listar().subscribe((vendas: any[]) => {
+    this.vendas = vendas.map(v => ({
+      ...v,
+      // 🔧 Corrige o formato da data para o Angular entender corretamente
+      data_venda: v.data_venda
+        ? new Date(v.data_venda.replace(' ', 'T'))
+        : null
+    }));
 
-    this.http.get<any[]>('http://localhost:8000/api/produtos', { headers }).subscribe((produtos) => {
+    this.vendasFiltradas = [...this.vendas];
+  });
+
+  this.http.get<any[]>('http://localhost:8000/api/produtos', { headers })
+    .subscribe((produtos) => {
       this.produtos = produtos;
     });
-  }
+}
+
 
   abrirRegistro() {
   const largura = screen.width;

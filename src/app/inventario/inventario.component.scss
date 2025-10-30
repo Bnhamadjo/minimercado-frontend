@@ -10,7 +10,7 @@
 
     .card {
       flex: 1 1 200px;
-      background-color: #fa9d12;
+      background-color: #2c3e50;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
@@ -22,15 +22,15 @@
       }
 
       h3 {
-        font-size: 18px;
+        font-size: 22px;
         margin-bottom: 10px;
-        color: #333;
+        color: #f58d24;
       }
 
       p {
-        font-size: 22px;
+        font-size: 18px;
         font-weight: bold;
-        color: #000201;
+        color: #f8fcfa;
       }
     }
   }
@@ -113,7 +113,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
   }
-}
+
 
 /* Responsividade */
 @media(max-width: 768px) {
@@ -128,4 +128,5 @@
   .graficos {
     flex-direction: column;
   }
+}
 }

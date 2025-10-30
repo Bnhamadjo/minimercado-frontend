@@ -53,15 +53,7 @@ interface Produto {
 export class CadastroComponent implements OnInit {
   private http = inject(HttpClient);
 
-  produto: Produto = {
-    nome: '',
-    codigo_barras: '',
-    preco: 0,
-    quantidade: 0,
-    categoria_id: 0,
-    fornecedor_id: undefined
-  };
-
+  produto: Produto = this.criarProdutoVazio();
   categorias: any[] = [];
   fornecedores: any[] = [];
 
@@ -77,6 +69,9 @@ export class CadastroComponent implements OnInit {
 
   availableDevices: MediaDeviceInfo[] = [];
   selectedDevice: MediaDeviceInfo | undefined;
+
+  salvando = false; // 🔒 evita duplicação
+  ultimoCodigoLido = ''; // 🔄 evita leitura repetida do mesmo código
 
   ngOnInit(): void {
     this.carregarCategorias();
@@ -98,29 +93,33 @@ export class CadastroComponent implements OnInit {
     }
   }
 
+  // 🧠 Evita leitura repetida do mesmo QR
   onCodeResult(result: string): void {
+    if (!result.trim() || result === this.ultimoCodigoLido) return;
+    this.ultimoCodigoLido = result;
+
     console.log('QR detectado:', result);
     this.produto.codigo_barras = result;
 
-    if (result.trim()) {
-      const headers = this.getHeaders();
-      this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${encodeURIComponent(result)}`, { headers })
-        .subscribe({
-          next: (res: any) => {
-            if (res) {
-              this.produto = {
-                ...this.produto,
-                nome: res.nome || '',
-                preco: res.preco || 0,
-                quantidade: res.quantidade || 0,
-                categoria_id: res.categoria_id || 0,
-                fornecedor_id: res.fornecedor_id
-              };
-            }
-          },
-          error: (err) => console.error('Produto não encontrado', err)
-        });
-    }
+    const headers = this.getHeaders();
+    this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${encodeURIComponent(result)}`, { headers })
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            // Produto existente
+            this.produto = {
+              nome: res.nome || '',
+              codigo_barras: res.codigo_barras || result,
+              preco: res.preco || 0,
+              quantidade: res.quantidade || 0,
+              categoria_id: res.categoria_id || 0,
+              fornecedor_id: res.fornecedor_id
+            };
+            alert(`⚠️ O produto "${res.nome}" já está cadastrado.`);
+          }
+        },
+        error: () => console.log('Código novo — pode cadastrar.'),
+      });
   }
 
   carregarCategorias(): void {
@@ -141,45 +140,57 @@ export class CadastroComponent implements OnInit {
       });
   }
 
-  verificarDuplicidade(): void {
-    const headers = this.getHeaders();
-    this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${this.produto.codigo_barras}`, { headers })
-      .subscribe({
-        next: (res: any) => {
-          if (res) {
-            alert('Já existe um produto com este código de barras.');
-          } else {
-            this.salvarProduto();
-          }
-        },
-        error: () => alert('Erro ao verificar duplicidade.')
-      });
-  }
-
   salvarProduto(): void {
-    const { nome, codigo_barras, preco, quantidade, categoria_id } = this.produto;
+    if (this.salvando) return; // 🔒 bloqueio duplo
 
+    const { nome, codigo_barras, preco, quantidade, categoria_id } = this.produto;
     if (!nome || !codigo_barras || !preco || !quantidade || !categoria_id) {
       alert('Preencha todos os campos obrigatórios.');
       return;
     }
 
+    this.salvando = true;
     const headers = this.getHeaders();
-    this.http.post('http://localhost:8000/api/produtos', this.produto, { headers })
+
+    // 🧩 Primeiro verifica se já existe
+    this.http.get(`http://localhost:8000/api/produtos?codigo_barras=${codigo_barras}`, { headers })
       .subscribe({
-        next: () => {
-          alert('✅ Produto cadastrado com sucesso!');
-          this.resetarFormulario();
+        next: (res: any) => {
+          if (res) {
+            alert('⚠️ Já existe um produto com este código de barras.');
+            this.salvando = false;
+          } else {
+            // Cria novo produto
+            this.http.post('http://localhost:8000/api/produtos', this.produto, { headers })
+              .subscribe({
+                next: () => {
+                  alert('✅ Produto cadastrado com sucesso!');
+                  this.resetarFormulario();
+                  this.salvando = false;
+                },
+                error: (err) => {
+                  console.error('Erro ao salvar produto', err);
+                  alert('Erro ao salvar produto.');
+                  this.salvando = false;
+                }
+              });
+          }
         },
         error: (err) => {
-          console.error('Erro ao salvar produto', err);
-          alert('Erro ao salvar produto.');
+          console.error('Erro ao verificar duplicidade', err);
+          alert('Erro ao verificar duplicidade.');
+          this.salvando = false;
         }
       });
   }
 
   private resetarFormulario(): void {
-    this.produto = {
+    this.produto = this.criarProdutoVazio();
+    this.ultimoCodigoLido = '';
+  }
+
+  private criarProdutoVazio(): Produto {
+    return {
       nome: '',
       codigo_barras: '',
       preco: 0,

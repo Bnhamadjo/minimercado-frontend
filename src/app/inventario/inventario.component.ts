@@ -14,10 +14,12 @@ Chart.register(...registerables);
   styleUrls: ['./inventario.component.scss']
 })
 export class InventarioComponent implements OnInit {
-  
+
   dados: any = { valor_total_estoque: 0, valor_total_vendas: 0, lucro_estimado: 0 };
   produtos: any[] = [];
   produtosFiltrados: any[] = [];
+  vendas: any[] = [];
+  movimentacoes: any[] = [];
 
   filtroProduto = '';
   filtroCategoria = '';
@@ -31,7 +33,20 @@ export class InventarioComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    // Carregar dados iniciais
+    this.carregarMovimentacoes();
+    this.carregarVendas();
     this.carregarInventario();
+  }
+
+  carregarMovimentacoes() {
+    this.http.get<any[]>('http://localhost:8000/api/estoque/movimentacoes')
+      .subscribe(res => this.movimentacoes = res);
+  }
+
+  carregarVendas() {
+    this.http.get<any[]>('http://localhost:8000/api/vendas')
+      .subscribe(res => this.vendas = res);
   }
 
   carregarInventario() {
@@ -42,13 +57,38 @@ export class InventarioComponent implements OnInit {
           valor_total_vendas: res.valor_total_vendas,
           lucro_estimado: res.lucro_estimado
         };
-        this.produtos = res.produtos;
+
+        this.produtos = res.produtos.map((p: { id: number; }) => ({
+          ...p,
+          quantidade: this.getEstoqueReal(p.id)
+        }));
+
         this.produtosFiltrados = [...this.produtos];
+
         this.gerarGraficoLucro();
         this.gerarGraficoMensal(res.vendas);
       },
       error: (err) => console.error('Erro ao carregar inventário', err)
     });
+  }
+
+  getEstoqueReal(produtoId: number): number {
+    const entradas = this.movimentacoes
+      .filter(m => m.produto_id === produtoId && m.tipo === 'entrada')
+      .reduce((sum, m) => sum + m.quantidade, 0);
+
+    const saidasMov = this.movimentacoes
+      .filter(m => m.produto_id === produtoId && m.tipo === 'saida')
+      .reduce((sum, m) => sum + m.quantidade, 0);
+
+    const saidasVenda = this.vendas
+      .filter(v => v.itens.some((i: any) => i.produto.id === produtoId))
+      .reduce((sum, v) => {
+        const item = v.itens.find((i: any) => i.produto.id === produtoId);
+        return sum + (item?.quantidade || 0);
+      }, 0);
+
+    return entradas - saidasMov - saidasVenda;
   }
 
   aplicarFiltros() {
@@ -68,55 +108,73 @@ export class InventarioComponent implements OnInit {
   }
 
   imprimirTabela() {
-    const conteudo = document.getElementById('area-impressao');
-    if (conteudo) {
-      const janela = window.open('', '', 'width=900,height=600');
-      janela?.document.write('<html><head><title>Impressão</title></head><body>');
-      janela?.document.write(conteudo.innerHTML);
-      janela?.document.write('</body></html>');
-      janela?.document.close();
-      janela?.print();
+    const printContents = document.getElementById('area-impressao')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    if (printContents) {
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload();
     }
   }
 
   gerarGraficoLucro() {
     if (!this.graficoLucroRef) return;
-    const topProdutos = [...this.produtos].sort((a,b)=> (b.lucro_total||0) - (a.lucro_total||0)).slice(0,5);
-    const nomes = topProdutos.map(p=>p.nome);
-    const lucros = topProdutos.map(p=>p.lucro_total||0);
 
     new Chart(this.graficoLucroRef.nativeElement, {
-      type: 'bar',
-      data: { labels: nomes, datasets: [{ label:'Lucro por Produto', data:lucros, backgroundColor:'rgba(46,204,113,0.7)', borderColor:'#27ae60', borderWidth:1 }] },
-      options: { responsive:true, plugins:{ title:{display:true,text:'Top 5 Produtos Mais Lucrativos'}, legend:{display:false} }, scales:{y:{beginAtZero:true,title:{display:true,text:'Lucro (FCFA)'}}, x:{title:{display:true,text:'Produto'}} } }
+      type: 'doughnut',
+      data: {
+        labels: ['Lucro', 'Vendas', 'Estoque'],
+        datasets: [{
+          data: [
+            this.dados.lucro_estimado,
+            this.dados.valor_total_vendas,
+            this.dados.valor_total_estoque
+          ],
+          backgroundColor: ['#4caf50', '#2196f3', '#ff9800']
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
     });
   }
 
   gerarGraficoMensal(vendas: any[]) {
     if (!this.graficoMensalRef) return;
-    const dadosMensais = new Map<string,{ totalVendas:number; totalLucro:number }>();
-    vendas.forEach(v=>{
-      const dataVenda = new Date(v.data_venda);
-      const mes = dataVenda.toLocaleString('default',{month:'short',year:'numeric'});
-      const valorVenda = v.valor_total || 0;
-      const lucro = v.itens?.reduce((s:any,i:any)=> s + ((i.preco_unitario - (i.produto?.preco||0)) * i.quantidade),0) || 0;
-      if(!dadosMensais.has(mes)) dadosMensais.set(mes,{totalVendas:0,totalLucro:0});
-      const registro = dadosMensais.get(mes)!;
-      registro.totalVendas += valorVenda;
-      registro.totalLucro += lucro;
+
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const vendasMensais = new Array(12).fill(0);
+
+    vendas.forEach(v => {
+      const mes = new Date(v.created_at).getMonth();
+      const totalVenda = v.itens.reduce((sum: number, i: any) => sum + i.quantidade * i.preco, 0);
+      vendasMensais[mes] += totalVenda;
     });
-    const labels = Array.from(dadosMensais.keys());
-    const vendasData = Array.from(dadosMensais.values()).map(v=>v.totalVendas);
-    const lucroData = Array.from(dadosMensais.values()).map(v=>v.totalLucro);
 
     new Chart(this.graficoMensalRef.nativeElement, {
-      type:'line',
-      data:{ labels, datasets:[
-        { label:'Vendas (FCFA)', data:vendasData, borderColor:'#3498db', backgroundColor:'rgba(52,152,219,0.3)', fill:true, tension:0.4 },
-        { label:'Lucro (FCFA)', data:lucroData, borderColor:'#2ecc71', backgroundColor:'rgba(46,204,113,0.3)', fill:true, tension:0.4 }
-      ] },
-      options:{ responsive:true, plugins:{title:{display:true,text:'Evolução Mensal: Vendas x Lucro'}, legend:{position:'bottom'}}, scales:{y:{beginAtZero:true}, x:{title:{display:true,text:'Mês'}}} }
+      type: 'bar',
+      data: {
+        labels: meses,
+        datasets: [{
+          label: 'Vendas Mensais',
+          data: vendasMensais,
+          backgroundColor: '#2196f3'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
     });
   }
-
 }

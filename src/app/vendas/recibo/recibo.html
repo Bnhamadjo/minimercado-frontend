@@ -1,29 +1,42 @@
-<div *ngIf="venda" class="recibo">
-  <h2 class="recibo-titulo">🧾 Mini Mercado - Recibo de Venda</h2>
-  <p><strong>Venda Nº:</strong> {{ venda.id }}</p>
-  <p><strong>Data:</strong> {{ venda.data_venda | date:'short' }}</p>
+<div class="recibo-container">
+  <header class="recibo-header">
+    <h2>Minimercado JEREMIAS</h2>
+    <p>Recibo de Venda</p>
+    <hr>
+  </header>
 
-  <table class="recibo-tabela">
-    <thead>
-      <tr>
-        <th>Produto</th>
-        <th>Qtd</th>
-        <th>Preço</th>
-        <th>Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of venda.itens">
-        <td>{{ item.produto?.nome }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>{{ item.preco_unitario }}</td>
-        <td>{{ item.subtotal }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <section class="recibo-info">
+    <p><strong>Data:</strong> {{ venda?.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+    <p><strong>Forma de pagamento:</strong> {{ venda?.forma_pagamento }}</p>
+    <p><strong>ID da Venda:</strong> {{ venda?.id }}</p>
+  </section>
 
- <h3 class="recibo-total">Total: {{ totalVenda | currency:'XOF':'symbol':'1.0-0' }}</h3>
- <hr class="divisor" />
+  <section class="recibo-itens" *ngIf="venda?.itens?.length">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Qtd</th>
+          <th>Preço Unit.</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of venda.itens">
+          <td>{{ item.produto?.nome }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.preco_unitario | number:'1.0-2' }}</td>
+          <td>{{ item.subtotal || (item.quantidade * item.preco_unitario) | number:'1.0-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-  <button class="btn-imprimir" (click)="imprimir()">🖨️ Imprimir</button>
+  <section class="recibo-total">
+    <p><strong>Total:</strong> {{ totalVenda | number:'1.0-2' }}</p>
+  </section>
+
+  <div class="recibo-botoes">
+    <button mat-raised-button color="primary" (click)="imprimir()">🖨️ Imprimir</button>
+  </div>
 </div>

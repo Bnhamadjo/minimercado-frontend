@@ -11,6 +11,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { FormItemVendaComponent } from '../form-item-venda';
 import { MatIconModule } from '@angular/material/icon';
+import { ReciboComponent } from '../recibo/recibo';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface ItemVenda {
   produto_id: number;
@@ -40,6 +42,7 @@ export interface ItemVenda {
 })
 export class RegistroComponent implements OnInit {
   private http = inject(HttpClient);
+ dialog = inject(MatDialog);
 
   selectedDevice?: MediaDeviceInfo;
   availableDevices: MediaDeviceInfo[] = [];
@@ -133,17 +136,20 @@ export class RegistroComponent implements OnInit {
       }))
     };
 
-    this.http.post('http://localhost:8000/api/vendas', venda, { headers: this.getHeaders() })
-      .subscribe({
-        next: () => {
-          alert('Venda registrada com sucesso!');
-          this.limparRegistro();
-        },
-        error: (err) => {
-          console.error('Erro ao registrar venda', err);
-          this.erro = 'Erro ao registrar venda.';
-        }
-      });
+   this.http.post('http://localhost:8000/api/vendas', venda, { headers: this.getHeaders() })
+  .subscribe({
+    next: (res: any) => {
+      this.limparRegistro();
+
+      // Abrir modal automaticamente
+      this.abrirReciboModal(res.id); // ✅ res.id é o ID da venda recém criada
+    },
+    error: (err) => {
+      console.error('Erro ao registrar venda', err);
+      this.erro = 'Erro ao registrar venda.';
+    }
+  });
+
   }
 
   limparRegistro() {
@@ -151,6 +157,27 @@ export class RegistroComponent implements OnInit {
     this.total = 0;
     this.erro = '';
   }
+
+
+  abrirRecibo(id: number) {
+  const recibo = window.open(
+    `http://localhost:4200/recibo/${id}`,
+    '_blank',
+    'width=800,height=600,menubar=no,toolbar=no,location=no,status=no'
+  );
+  if (!recibo) {
+    alert('⚠️ Não foi possível abrir o recibo — verifique se o navegador bloqueou pop-ups.');
+  }
+}
+
+
+abrirReciboModal(id: number) {
+  this.dialog.open(ReciboComponent, {
+    width: '600px',
+    data: { id }
+  });
+}
+
 
   fechar() {
     if (document.fullscreenElement) {

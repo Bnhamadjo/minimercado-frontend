@@ -1,16 +1,55 @@
 <h2 class="estoque-titulo">📦 Movimentações de Estoque</h2>
 
+<!-- Registro de movimentação -->
+<form (ngSubmit)="registrarMovimentacao()" class="registro-form">
+  <div class="form-group">
+    <label>Produto:</label>
+    <select [(ngModel)]="novaMovimentacao.produto_id" name="produto_id" required>
+      <option *ngFor="let p of produtos" [value]="p.id">{{ p.nome }}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Tipo:</label>
+    <select [(ngModel)]="novaMovimentacao.tipo" name="tipo">
+      <option value="entrada">Entrada</option>
+      <option value="saida">Saída</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Quantidade:</label>
+    <input type="number" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="1" />
+  </div>
+
+  <div *ngIf="novaMovimentacao.tipo === 'entrada'" class="form-group">
+  <label for="data_validade">Data de Validade</label>
+  <input
+    type="date"
+    id="data_validade"
+    [(ngModel)]="novaMovimentacao.data_validade"
+    name="data_validade"
+    class="form-control"
+  />
+</div>
+
+
+  <div class="form-group">
+    <label>Motivo:</label>
+    <input type="text" [(ngModel)]="novaMovimentacao.motivo" name="motivo" />
+  </div>
+  <button type="submit" class="btn-registrar">✅ Registrar</button>
+</form>
+
+<h2 class="estoque-titulo">📦 Filtro de produtos</h2>
+<!-- Filtro -->
 <form (ngSubmit)="buscarMovimentacoes()" class="filtro-form">
   <div class="form-group">
     <label>Data Início:</label>
     <input type="date" [(ngModel)]="filtros.data_inicio" name="data_inicio" />
   </div>
-
   <div class="form-group">
     <label>Data Fim:</label>
     <input type="date" [(ngModel)]="filtros.data_fim" name="data_fim" />
   </div>
-
   <div class="form-group">
     <label>Tipo:</label>
     <select [(ngModel)]="filtros.tipo" name="tipo">
@@ -19,41 +58,11 @@
       <option value="saida">Saída</option>
     </select>
   </div>
-
   <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
-  <p>Estoque atual: {{ getEstoque(novaMovimentacao.produto_id) }}</p>
-  
+  <button type="button" (click)="exportarExcel()" class="btn-filtrar">📥 Exportar Excel</button>
 </form>
 
-<form (ngSubmit)="registrarMovimentacao()" class="registro-form">
-  <div class="form-group">
-    <label>Produto:</label>
-    <select [(ngModel)]="novaMovimentacao.produto_id" name="produto_id" required>
-      <option *ngFor="let p of produtos" [value]="p.id">{{ p.nome }}</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Tipo:</label>
-    <select [(ngModel)]="novaMovimentacao.tipo" name="tipo">
-      <option value="entrada">Entrada</option>
-      <option value="saida">Saída</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Quantidade:</label>
-    <input type="number" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="1" />
-  </div>
-
-  <div class="form-group">
-    <label>Motivo:</label>
-    <input type="text" [(ngModel)]="novaMovimentacao.motivo" name="motivo" />
-  </div>
-
-  <button type="submit" class="btn-registrar">✅ Registrar</button>
-</form>
-
+<!-- Tabela -->
 <table class="tabela-movimentacoes" *ngIf="movimentacoes.length > 0">
   <thead>
     <tr>
@@ -62,15 +71,36 @@
       <th>Tipo</th>
       <th>Quantidade</th>
       <th>Motivo</th>
+      <th>Estoque Atual</th>
+      <th>Total Vendido</th>
+      <th>Validade</th>
+      <th>Aviso</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let m of movimentacoes">
+    <tr *ngFor="let m of movimentacoesPaginadas">
       <td>{{ m.created_at | date:'short' }}</td>
-      <td>{{ m.produto?.nome }}</td>
+      <td>
+        <a (click)="abrirDetalhes(m.produto.id)" class="link-detalhe">
+          {{ m.produto.nome }}
+        </a>
+      </td>
       <td>{{ m.tipo }}</td>
       <td>{{ m.quantidade }}</td>
-      <td>{{ m.motivo }}</td>
+      <td title="{{ m.motivo }}">{{ m.motivo }}</td>
+      <td>{{ getEstoque(m.produto.id) }}</td>
+      <td>{{ getTotalVendido(m.produto.id) }}</td>
+      <td>{{ m.data_validade ? (m.data_validade | date: 'dd/MM/yyyy') : '-' }}</td>
+      <td>{{ getAvisoValidade(m.data_validade) }}</td>
     </tr>
   </tbody>
 </table>
+
+<!-- Controles de paginação -->
+<div class="paginacao" *ngIf="totalPaginas > 1">
+  <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">⬅️ Anterior</button>
+  <span>Página {{ paginaAtual }} / {{ totalPaginas }}</span>
+  <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">Próxima ➡️</button>
+</div>
+
+
