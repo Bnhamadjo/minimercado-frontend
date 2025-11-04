@@ -1,5 +1,5 @@
 <div class="dashboard">
-  <h2 class="dashboard-title">📊 Estatísticas do Mini Mercado</h2>
+  <h2 class="dashboard-title">📊 Mini Mercado JERMEN</h2>
 
   <div class="card-container">
     <div class="card card-produtos" (click)="navegarPara('produtos')">
@@ -31,11 +31,12 @@
 
   <hr class="divisor" />
 
-  <div class="grafico-container" *ngIf="chartData">
-    <canvas baseChart
-      [data]="chartData"
-      [type]="'line'"
-      [options]="chartOptions">
-    </canvas>
-  </div>
+  
+ <!-- Imagem de fundo -->
+  <div class="dashboard-background"></div>
+<marquee behavior="scroll" direction="left" class="marquee-text" scrollamount="5" mouseover="this.stop()" mouseout="this.start()">
+  Bem-vindo ao Mini Mercado JERMEN! Gerencie seu estoque, vendas e muito mais com facilidade.
+</marquee>
+
+  
 </div>

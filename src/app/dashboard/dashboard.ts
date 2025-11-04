@@ -3,13 +3,12 @@ import { DashboardService } from '../services/dashboard';
 import { ChartConfiguration } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { BaseChartDirective } from 'ng2-charts';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })
@@ -37,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStats();
-    this.loadChartData();
+   
   }
 
   
@@ -53,20 +52,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private loadChartData(): void {
-    this.http.get<any>('http://localhost:8000/api/grafico-vendas').subscribe(
-      data => {
-        this.chartData = {
-          labels: data.labels,
-          datasets: data.datasets
-        };
-      },
-      err => {
-        console.error('Erro ao carregar gráfico de vendas', err);
-        this.chartData = null;
-      }
-    );
-  }
+
+ 
 
 navegarPara(destino: string) {
   switch (destino) {

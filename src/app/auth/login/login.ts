@@ -21,28 +21,48 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  
   login() {
-    this.authService.login(this.email, this.password).subscribe({
-      next: (res: { token: string }) => {
+    if (!this.email || !this.password) {
+      this.erro = 'Preencha e-mail e senha';
+      return;
+    }
+
+    this.authService.login(this.email, this.password).subscribe(
+      (res: { token: string }) => {
+        // Armazena token
         localStorage.setItem('token', res.token);
+
+        // Decodifica payload do JWT para pegar role e nome
+        try {
+          const payload = JSON.parse(atob(res.token.split('.')[1]));
+          localStorage.setItem('role', payload.role);
+          localStorage.setItem('name', payload.name);
+        } catch (e) {
+          console.warn('Erro ao decodificar token:', e);
+        }
+
+        // Redireciona para dashboard
         this.router.navigate(['/dashboard']);
       },
-      error: (err: any) => {
-        this.erro = 'Credenciais inválidas porque ' + (err.error?.message || 'Erro desconhecido');
-      },
-    });
+      (err: any) => {
+        this.erro = 'Credenciais inválidas: ' + (err.error?.message || 'Erro desconhecido');
+      }
+    );
   }
 
   resetPassword() {
-    this.authService.resetPassword(this.resetPasswordEmail).subscribe({
-      next: (res: { message: string }) => {
+    if (!this.resetPasswordEmail) {
+      this.resetMessage = 'Informe o e-mail';
+      return;
+    }
+
+    this.authService.resetPassword(this.resetPasswordEmail).subscribe(
+      (res: { message: string }) => {
         this.resetMessage = res.message;
       },
-      error: (err: any) => {
+      (err: any) => {
         this.resetMessage = err.error?.message || 'Erro ao redefinir a senha';
-      },
-    });
+      }
+    );
   }
-
 }

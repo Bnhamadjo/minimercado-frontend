@@ -43,14 +43,15 @@ export class ConfiguracoesService {
   }
 
   // Atualiza as configurações da loja
-  atualizarLoja(data: FormData): Observable<any> {
+atualizarLoja(data: FormData): Observable<any> {
   return this.http.put(`${this.apiUrl}/loja`, data, {
     headers: new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('token') || ''}`
-      // ✅ Não defina 'Content-Type' aqui
+      // Não define 'Content-Type' aqui!
     })
   });
 }
+
   // Atualiza as configurações de pagamento
   atualizarPagamento(data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/pagamento`, data, { headers: this.getHeaders() });

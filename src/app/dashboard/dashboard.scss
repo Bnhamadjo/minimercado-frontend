@@ -85,6 +85,35 @@ $value-color: #1a1a1a;
   margin: 2rem 0;
 }
 
+.dashboard-background {
+  background-image: url('/assets/images/minimercado1.jpg');
+  background-size: cover;       // Ajusta para cobrir toda a área
+  background-position: center;  // Centraliza a imagem
+  width: 100%;
+  height: 250px;                // Ajuste conforme necessário
+  border-radius: 8px;           // Opcional para bordas arredondadas
+  margin-top: 20px;
+
+}
+
+.dashboard-background {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); // Sobreposição escura
+  }
+}
+
+.marquee-text {
+  font-size: 1.3rem;
+  color: #333;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
 .grafico-container {
   background: #fff;
   padding: 1rem;
