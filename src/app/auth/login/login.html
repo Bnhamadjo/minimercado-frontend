@@ -1,16 +1,24 @@
-<div *ngIf="!showResetForm">
-  <h2>Login</h2>
-  <input type="email" [(ngModel)]="email" placeholder="Email" />
-  <input type="password" [(ngModel)]="password" placeholder="Senha" />
-  <button (click)="login()">Entrar</button>
-  <p>{{ erro }}</p>
-  <a (click)="showResetForm = true" style="cursor: pointer;">Esqueci minha senha</a>
-</div>
+<div class="login-page">
+  <div class="login-container">
+    <div *ngIf="!showResetForm">
+      <h2>Login</h2>
+      <input type="email" [(ngModel)]="email" placeholder="Email" />
+      <input type="password" [(ngModel)]="password" placeholder="Senha" />
+      <button (click)="login()">Entrar</button>
+      <p>{{ erro }}</p>
+      <a (click)="showResetForm = true" style="cursor: pointer;">Esqueci minha senha</a>
+    </div>
 
-<div *ngIf="showResetForm">
-  <h2>Redefinir Senha</h2>
-  <input type="email" [(ngModel)]="resetPasswordEmail" placeholder="Email" />
-  <button (click)="resetPassword()">Redefinir</button>
-  <p>{{ resetMessage }}</p>
-  <a (click)="showResetForm = false" style="cursor: pointer;">Voltar ao login</a>
+    <div *ngIf="showResetForm">
+      <h2>Redefinir Senha</h2>
+      <input type="email" [(ngModel)]="resetPasswordEmail" placeholder="Email" />
+      <button (click)="resetPassword()">Redefinir</button>
+      <p>{{ resetMessage }}</p>
+      <a (click)="showResetForm = false" style="cursor: pointer;">Voltar ao login</a>
+    </div>
+  </div>
+
+  <marquee behavior="scroll" direction="left" class="marquee-text" scrollamount="5" mouseover="this.stop()" mouseout="this.start()">
+    Bem-vindo ao Mini Mercado JERMEN! Gerencie seu estoque, vendas e muito mais com facilidade.
+  </marquee>
 </div>

@@ -88,7 +88,12 @@
       <td>{{ m.tipo }}</td>
       <td>{{ m.quantidade }}</td>
       <td title="{{ m.motivo }}">{{ m.motivo }}</td>
-      <td>{{ getEstoque(m.produto.id) }}</td>
+      <td [ngClass]="{
+      'estoque-negativo': getEstoque(m.produto.id) < 0,
+      'estoque-positivo': getEstoque(m.produto.id) >= 0
+    }">
+  {{ getEstoque(m.produto.id) }}
+</td>
       <td>{{ getTotalVendido(m.produto.id) }}</td>
       <td>{{ m.data_validade ? (m.data_validade | date: 'dd/MM/yyyy') : '-' }}</td>
       <td>{{ getAvisoValidade(m.data_validade) }}</td>

@@ -25,22 +25,22 @@ div {
     font-weight: 600;
   }
 
-  input {
-    display: block;
-    width: 100%;
-    padding: $input-padding;
-    margin-bottom: 1rem;
-    border: 1px solid color.adjust($primary-color, $lightness: 30%);
-    border-radius: $border-radius;
-    font-size: 1rem;
-    transition: border-color $transition-speed;
+input {
+  display: block;            // volta para bloco
+  width: 90%;               // ocupa toda a largura do contêiner
+  padding: $input-padding;
+  margin: 0 auto 1rem auto;  // centraliza horizontalmente
+  border: 1px solid color.adjust($primary-color, $lightness: 30%);
+  border-radius: $border-radius;
+  font-size: 1rem;
+  transition: border-color $transition-speed;
 
-    &:focus {
-      border-color: $primary-color;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
-    }
+  &:focus {
+    border-color: $primary-color;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
   }
+}
 
   button {
     width: 100%;
@@ -79,5 +79,49 @@ div {
      color: rgba($primary-color, 0.85); // reduz brilho sem alterar tom
       text-decoration: underline;
     }
+  }
+}
+
+.login-page {
+  background-image: url('/assets/images/minimercado.jpg');
+  background-size: cover;        // cobre toda a área
+  background-position: center;   // centraliza a imagem
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;                 // ocupa toda a altura da tela
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .login-container {
+    background-color: rgba(255, 255, 255, 0.85); // fundo branco semi-transparente
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    text-align: center;
+  }
+
+  .marquee-text {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  }
+}
+// Formulário de redefinição de senha
+.reset-form {
+  margin-top: 1.5rem;
+
+  h3 {
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 1rem;
+    font-weight: 600;
   }
 }
