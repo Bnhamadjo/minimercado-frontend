@@ -116,27 +116,30 @@ totalPaginas = 1;
 
 
   // -------------------- ESTOQUE E VENDAS --------------------
-  getEstoque(produtoId: string): number {
-    // Entradas manuais
-    const entradas = this.movimentacoes
-      .filter(m => m.produto_id === produtoId && m.tipo === 'entrada')
-      .reduce((sum, m) => sum + m.quantidade, 0);
+ getEstoque(produtoId: any): number {
+  const idNum = Number(produtoId);
+  const produto = this.produtos.find(p => Number(p.id) === idNum);
+  if (!produto) return 0;
 
-    // Saídas manuais
-    const saidasMovimentacao = this.movimentacoes
-      .filter(m => m.produto_id === produtoId && m.tipo === 'saida')
-      .reduce((sum, m) => sum + m.quantidade, 0);
+  const entradas = this.movimentacoes
+    .filter(m => Number(m.produto_id) === idNum && m.tipo === 'entrada')
+    .reduce((sum, m) => sum + Number(m.quantidade || 0), 0);
 
-    // Saídas automáticas das vendas
-    const vendas = this.vendas
-      .filter(v => v.itens.some((i: any) => i.produto.id === produtoId))
-      .reduce((sum, v) => {
-        const item = v.itens.find((i: any) => i.produto.id === produtoId);
-        return sum + (item?.quantidade || 0);
-      }, 0);
+  const saidas = this.movimentacoes
+    .filter(m => Number(m.produto_id) === idNum && m.tipo === 'saida')
+    .reduce((sum, m) => sum + Number(m.quantidade || 0), 0);
 
-    return entradas - saidasMovimentacao - vendas;
-  }
+  const vendidos = this.vendas
+    .filter(v => v.itens?.some((i: any) => Number(i.produto.id) === idNum))
+    .reduce((sum, v) => {
+      const item = v.itens.find((i: any) => Number(i.produto.id) === idNum);
+      return sum + Number(item?.quantidade || 0);
+    }, 0);
+
+  // soma o estoque inicial do produto
+  const estoqueFinal = Number(produto.quantidade || 0) + entradas - saidas - vendidos;
+  return Number.isFinite(estoqueFinal) ? estoqueFinal : 0;
+}
 
   getTotalVendido(produtoId: string): number {
     // Apenas vendas do sistema
@@ -168,6 +171,8 @@ totalPaginas = 1;
       data: { produto, estoque: estoqueAtual, totalVendido, movimentacoes: movimentacoesProduto }
     });
   }
+
+  
 
   // -------------------- EXPORTAÇÃO --------------------
   exportarExcel() {
@@ -221,9 +226,10 @@ paginaAnterior() {
   }
 }
 
-
   // -------------------- HEADERS --------------------
   getHeaders() {
     return { Authorization: `Bearer ${localStorage.getItem('token')}` };
   }
+
+
 }

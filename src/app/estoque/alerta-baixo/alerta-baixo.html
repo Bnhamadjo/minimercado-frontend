@@ -1,4 +1,5 @@
 <div class="alerta-container">
+  <!-- Filtros -->
   <div class="filtros">
     <input type="text" [(ngModel)]="filtroNome" placeholder="🔍 Filtrar por nome" />
     <select [(ngModel)]="filtroCategoria">
@@ -7,22 +8,26 @@
     </select>
   </div>
 
+  <!-- Mensagens de alerta -->
   <p *ngIf="produtosFiltrados.length > 0" class="alerta-estoque">
-    ⚠️ Atenção! Existem {{ produtosFiltrados.length }} produto(s) com estoque igual ou abaixo de {{ limiteMinimo }} unidades.
+    ⚠️ Atenção! Existem {{ produtosFiltrados.length }} produto(s) com estoque baixo ou validade próxima.
   </p>
 
   <p *ngIf="produtosFiltrados.length === 0" class="mensagem-ok">
-    ✅ Todos os produtos estão com estoque acima de {{ limiteMinimo }} unidades.
+    ✅ Todos os produtos estão com estoque acima de {{ limiteMinimo }} unidades e validade em dia.
   </p>
 
+  <!-- Tabela de produtos -->
   <table *ngIf="produtosFiltrados.length > 0" class="tabela-estoque">
     <thead>
       <tr>
         <th>Produto</th>
         <th>Código de Barras</th>
         <th>Estoque Atual</th>
-        <th>Estoque Mínimo<br><small>(limite: {{ limiteMinimo }})</small></th>
+        <th>Estoque Mínimo</th>
         <th>Categoria</th>
+        <th>Validade</th>
+        <th>Aviso</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +39,15 @@
         </td>
         <td>{{ limiteMinimo }}</td>
         <td>{{ p.categoria?.nome }}</td>
+        <td>{{ p.data_validade ? (p.data_validade | date:'dd/MM/yyyy') : '-' }}</td>
+        <td>
+          <span *ngIf="getAlertaTipo(p)" [ngClass]="{
+            'alerta-vermelho': p.estoqueAtual <= limiteMinimo,
+            'alerta-laranja': p.data_validade && p.estoqueAtual > limiteMinimo
+          }">
+            {{ getAlertaTipo(p) }}
+          </span>
+        </td>
       </tr>
     </tbody>
   </table>

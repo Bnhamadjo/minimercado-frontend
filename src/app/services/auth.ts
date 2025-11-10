@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<{ token: string }> {
+ login(email: string, password: string): Observable<{ token: string }> {
   return new Observable(observer => {
     this.http.post<{ token: string, user: any }>(
       `${this.apiUrl}/login`,
@@ -19,15 +19,29 @@ export class AuthService {
       { headers: { 'Content-Type': 'application/json' } }
     ).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.token);
+        console.log('✅ Login bem-sucedido:', res);
+
+        const token = res.token;
+        if (!token) {
+          observer.error(new Error('Token não recebido do servidor.'));
+          return;
+        }
+
+        // Apenas guarda o token, não tenta decodificar
+        localStorage.setItem('token', token);
         localStorage.setItem('currentUser', JSON.stringify(res.user));
-        observer.next({ token: res.token }); // envia o token como esperado
+
+        observer.next({ token });
         observer.complete();
       },
-      error: (err) => observer.error(err)
+      error: (err) => {
+        console.error('❌ Erro no login:', err);
+        observer.error(err);
+      }
     });
   });
 }
+
 
 getUser(): any {
   return JSON.parse(localStorage.getItem('currentUser') || '{}');
